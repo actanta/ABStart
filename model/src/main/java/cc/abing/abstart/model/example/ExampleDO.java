@@ -1,19 +1,29 @@
 package cc.abing.abstart.model.example;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+@TableName(value = "example", schema = "abstart")
+public class ExampleDO implements Serializable {
 
-public class ExampleDO {
-
+    private static final long serialVersionUID = -4164424827871435176L;
     private Long id;
 
-    private String varchar;
+    private String string;
 
-    private LocalDateTime dateTime;
+    private Boolean bool;
 
+    private Byte[] ipv6;
 
-    private LocalDateTime gmtCreate;
+    private LocalDateTime createTime;
 
-    private LocalDateTime gmtUpdate;
+    private LocalDateTime modifyTime;
+
+    private BigDecimal num1;
+
+    private Float num2;
 
     public Long getId() {
         return id;
@@ -23,35 +33,59 @@ public class ExampleDO {
         this.id = id;
     }
 
-    public String getVarchar() {
-        return varchar;
+    public String getString() {
+        return string;
     }
 
-    public void setVarchar(String varchar) {
-        this.varchar = varchar;
+    public void setString(String string) {
+        this.string = string;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public Boolean getBool() {
+        return bool;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setBool(Boolean bool) {
+        this.bool = bool;
     }
 
-    public LocalDateTime getGmtCreate() {
-        return gmtCreate;
+    public Byte[] getIpv6() {
+        return ipv6;
     }
 
-    public void setGmtCreate(LocalDateTime gmtCreate) {
-        this.gmtCreate = gmtCreate;
+    public void setIpv6(Byte[] ipv6) {
+        this.ipv6 = ipv6;
     }
 
-    public LocalDateTime getGmtUpdate() {
-        return gmtUpdate;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public void setGmtUpdate(LocalDateTime gmtUpdate) {
-        this.gmtUpdate = gmtUpdate;
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public LocalDateTime getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(LocalDateTime modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
+    public BigDecimal getNum1() {
+        return num1;
+    }
+
+    public void setNum1(BigDecimal num1) {
+        this.num1 = num1;
+    }
+
+    public Float getNum2() {
+        return num2;
+    }
+
+    public void setNum2(Float num2) {
+        this.num2 = num2;
     }
 }

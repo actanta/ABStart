@@ -23,6 +23,10 @@
             <artifactId>abstart-support</artifactId>
         </dependency>
         <!--子模块-END-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-annotation</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

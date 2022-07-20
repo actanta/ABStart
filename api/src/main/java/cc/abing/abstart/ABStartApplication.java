@@ -9,7 +9,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 public class ABStartApplication {
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder(ABStartApplication.class).web(WebApplicationType.SERVLET).run(args);
+//		new SpringApplicationBuilder(ABStartApplication.class).web(WebApplicationType.SERVLET).run(args);
 		SpringApplication.run(ABStartApplication.class, args);
 	}
 

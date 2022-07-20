@@ -73,6 +73,30 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+
+			<!-- 三方库-START-->
+			<dependency>
+				<groupId>p6spy</groupId>
+				<artifactId>p6spy</artifactId>
+				<version>3.9.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-boot-starter</artifactId>
+				<version>3.5.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-annotation</artifactId>
+				<version>3.5.1</version>
+			</dependency>
+			<!--多数据源支持-->
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+				<version>3.2.1</version>
+			</dependency>
+			<!-- 三方库-END-->
 		</dependencies>
 	</dependencyManagement>
 

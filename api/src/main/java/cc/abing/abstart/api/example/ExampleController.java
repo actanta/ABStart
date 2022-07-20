@@ -27,7 +27,7 @@ public class ExampleController {
     @GetMapping(value = "")
     public ResponseEntity<Page<ExampleDO>> getExampleDOPage(
             @RequestParam(value = "id", required = false) Long id,
-            @RequestParam(value = "appId") Date createTime,
+            @RequestParam(value = "createTime",required = false) Date createTime,
             @RequestParam(value = "pageIndex", required = false, defaultValue = "1") Integer pageIndex,
             @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
         if(pageSize > 20){

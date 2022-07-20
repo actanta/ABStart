@@ -23,6 +23,6 @@ public class ExampleServiceImpl implements ExampleService {
 
     @Override
     public Page<ExampleDO> getExampleDOPage(Long id, Date createTime, Integer pageIndex, Integer pageSize) {
-        return exampleMapper.selectPage(PageDTO.of(pageIndex,pageSize),Wrappers.<ExampleDO>lambdaQuery().eq(ExampleDO::getId,id).eq(ExampleDO::getGmtCreate,createTime));
+        return exampleMapper.selectPage(PageDTO.of(pageIndex,pageSize),Wrappers.<ExampleDO>lambdaQuery().eq(id != null,ExampleDO::getId,id).eq(createTime != null,ExampleDO::getCreateTime,createTime));
     }
 }
