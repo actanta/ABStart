@@ -4,7 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
+
 @TableName(value = "example", schema = "abstart")
 public class ExampleDO implements Serializable {
 
@@ -17,9 +18,9 @@ public class ExampleDO implements Serializable {
 
     private Byte[] ipv6;
 
-    private LocalDateTime createTime;
+    private Date createTime;
 
-    private LocalDateTime modifyTime;
+    private Date modifyTime;
 
     private BigDecimal num1;
 
@@ -57,19 +58,19 @@ public class ExampleDO implements Serializable {
         this.ipv6 = ipv6;
     }
 
-    public LocalDateTime getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public LocalDateTime getModifyTime() {
+    public Date getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(LocalDateTime modifyTime) {
+    public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
 

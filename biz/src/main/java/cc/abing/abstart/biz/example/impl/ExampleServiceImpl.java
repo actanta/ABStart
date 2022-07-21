@@ -22,7 +22,12 @@ public class ExampleServiceImpl implements ExampleService {
     }
 
     @Override
-    public Page<ExampleDO> getExampleDOPage(Long id, Date createTime, Integer pageIndex, Integer pageSize) {
-        return exampleMapper.selectPage(PageDTO.of(pageIndex,pageSize),Wrappers.<ExampleDO>lambdaQuery().eq(id != null,ExampleDO::getId,id).eq(createTime != null,ExampleDO::getCreateTime,createTime));
+    public Page<ExampleDO> getExampleDOPage(Long id, Date startCreateTime, Date endCreateTime, Integer pageIndex, Integer pageSize) {
+        return exampleMapper.selectPage(PageDTO.<ExampleDO>of(pageIndex, pageSize), Wrappers.<ExampleDO>lambdaQuery()
+                .eq(id != null, ExampleDO::getId, id)
+                .ge(startCreateTime != null, ExampleDO::getCreateTime, startCreateTime)
+                .le(endCreateTime != null, ExampleDO::getCreateTime, endCreateTime)
+                .orderByDesc(ExampleDO::getCreateTime)
+        );
     }
 }

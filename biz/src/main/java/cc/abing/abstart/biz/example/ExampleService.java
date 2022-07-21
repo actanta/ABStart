@@ -6,5 +6,5 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.Date;
 
 public interface ExampleService {
-    Page<ExampleDO> getExampleDOPage(Long id, Date createTime, Integer pageIndex, Integer pageSize);
+    Page<ExampleDO> getExampleDOPage(Long id, Date startCreateTime, Date endCreateTime, Integer pageIndex, Integer pageSize);
 }
