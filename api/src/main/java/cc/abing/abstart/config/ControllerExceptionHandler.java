@@ -2,12 +2,23 @@ package cc.abing.abstart.config;
 
 import cc.abing.abstart.support.system.exception.ABException;
 import cc.abing.abstart.support.system.exception.ABParamException;
+import cc.abing.abstart.support.system.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author ABing
@@ -19,28 +30,51 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 public class ControllerExceptionHandler {
 
     @ExceptionHandler
-    public Object exception(Exception e) {
+    public Object handleException(Exception e) {
         return logException("系统异常:"+e.getMessage(),e);
     }
 
 
     @ExceptionHandler({ABException.class, ABParamException.class})
-    public Object businessException(ABException e) {
+    public Object handleBusinessException(ABException e) {
         return logException("业务异常:"+e.getInfo(),e);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public Object paramException(MissingServletRequestParameterException e) {
+    public Object handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
         return log("缺少参数:"+e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public Object paramException(MethodArgumentTypeMismatchException e) {
+    public Object handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
         return log("参数错误:"+e.getMessage());
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Object handleMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
+        BindingResult bindingResult = e.getBindingResult();
+        StringBuilder sb = new StringBuilder("请求地址:" + request.getRequestURI() + ", 参数校验异常:");
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            sb.append(fieldError.getField()).append("：").append(fieldError.getDefaultMessage()).append(", ");
+        }
+        return Result.failed(log(sb.toString()));
+    }
+
+    @ExceptionHandler({ConstraintViolationException.class})
+    public Result<?> handleConstraintViolationException(HttpServletRequest request,ConstraintViolationException e) {
+        Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+        String validateMsg = String.valueOf(constraintViolations.stream()
+                .map(ConstraintViolation::getMessage)
+                .collect(Collectors.toList()));
+        log.warn("请求地址:{}, 参数校验异常:{}", request.getRequestURI(), validateMsg);
+        if (StringUtils.hasText(validateMsg)) {
+            return Result.failed(log(validateMsg));
+        }
+        return Result.failed();
+    }
+
     private String logException(String exceptionInfo,Exception e){
-        log.info(exceptionInfo,e);
+        log.warn(exceptionInfo,e);
         return exceptionInfo;
     }
 

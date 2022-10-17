@@ -3,6 +3,7 @@ package cc.abing.abstart.model.example;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ public class ExampleDO implements Serializable {
     @TableId
     private Long id;
 
+    @Length(max = 20, message = "字符串限制20位")
     private String string;
 
     private Boolean bool;

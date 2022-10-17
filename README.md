@@ -7,21 +7,23 @@ A Simple Spring Boot Project
 + 简单增删改查
 
 ## TODO
-1. 返回非ResponseEntity，统一包装成ResponseEntity. 定义统一返回体结构
+1. 返回非ResponseEntity，返回默认包装成ResponseEntity<Result<Object>>. 定义统一返回体结构
 2. 自定义配置写成配置类，方便查找@ConfigurationProperties(prefix = "xx.xx.xx")
 3. 所有二方接口，url都统一定义常量，接口统一写到一个类中
 4. 异常枚举中，标识异常分类：认证失败/缺少权限/参数有误
 5. 全局异常捕获: √
    - org.springframework.web.bind.MissingServletRequestParameterException √
    - org.springframework.web.method.annotation.MethodArgumentTypeMismatchException √
-6. 接口缓存
-7. 返回默认包装成ResponseEntity<Result<Object>>
-8. JSR303参数校验
-9. Excel文件上传解析、导出
-10. Word、PDF生成(可选itextPDF)，电子签名到文件上
-11. 接口加密、数字签名。验签解签
-12. 接口安全限流，防暴力破解
+6. JSR303参数校验
+7. Excel文件上传解析、导出
+8. 接口缓存
+9. 接口加密、数字签名。验签解签 
+10. 接口安全限流，防暴力破解
+11. Word、PDF生成(可选itextPDF)，电子签名到文件上
+12. 自定义朋友圈分享海报生成
 13. 异常日志展示时显示为红色字体
+14. Docker部署
+15. 代码生成工具
 
 ## CHECK
 1. 分页插件提示，确认是否有缓存问题：新的分页插件,一缓和二缓遵循mybatis的规则,需要设置 MybatisConfiguration#useDeprecatedExecutor = false 避免缓存出现问题(该属性会在旧插件移除后一同移除)

@@ -9,13 +9,17 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import java.util.Date;
 import java.util.List;
 
 @Slf4j
 @RestController
+@Validated
 @RequestMapping(SystemConstant.BASE_PATH + "/example")
 public class ExampleController {
 
@@ -29,7 +33,7 @@ public class ExampleController {
 
     @GetMapping(value = "/list")
     public List<ExampleDO> listExampleDO(
-            @RequestParam(value = "id", required = false) Long id,
+            @Valid @Max(5) @RequestParam(value = "id", required = false) Long id,
             @RequestParam(value = "start_create_time", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startCreateTime,
             @RequestParam(value = "end_create_time", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endCreateTime,
             @RequestParam(value = "page_index", required = false, defaultValue = "1") Integer pageIndex,
@@ -46,7 +50,7 @@ public class ExampleController {
     }
 
     @PostMapping(value = "/")
-    public Integer createExampleDO(@RequestBody ExampleRequest request) {
+    public Integer createExampleDO(@Valid @RequestBody ExampleRequest request) {
         return exampleService.createExampleDO(request);
     }
 

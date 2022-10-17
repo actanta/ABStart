@@ -23,6 +23,11 @@
             <artifactId>abstart-util</artifactId>
         </dependency>
         <!--子模块-END-->
+        <!-- validation-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
         <!--lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
