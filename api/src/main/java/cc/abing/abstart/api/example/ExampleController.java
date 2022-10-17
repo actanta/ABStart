@@ -4,7 +4,6 @@ import cc.abing.abstart.biz.example.ExampleService;
 import cc.abing.abstart.model.example.ExampleDO;
 import cc.abing.abstart.model.example.request.ExampleRequest;
 import cc.abing.abstart.support.system.constant.SystemConstant;
-import cc.abing.abstart.support.system.exception.ABParamException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +32,11 @@ public class ExampleController {
 
     @GetMapping(value = "/list")
     public List<ExampleDO> listExampleDO(
-            @Valid @Max(5) @RequestParam(value = "id", required = false) Long id,
+            @RequestParam(value = "id", required = false) Long id,
             @RequestParam(value = "start_create_time", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startCreateTime,
             @RequestParam(value = "end_create_time", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endCreateTime,
             @RequestParam(value = "page_index", required = false, defaultValue = "1") Integer pageIndex,
-            @RequestParam(value = "page_size", required = false, defaultValue = "20") Integer pageSize) {
-        if (pageSize > SystemConstant.PAGE_SIZE) {
-            throw new ABParamException("page_size超过最大值");
-        }
+            @Valid @Max(value = SystemConstant.PAGE_SIZE,message = "page_size超过最大值") @RequestParam(value = "page_size", required = false, defaultValue = "20") Integer pageSize) {
         return exampleService.listExampleDO(id, startCreateTime, endCreateTime, pageIndex, pageSize);
     }
 
