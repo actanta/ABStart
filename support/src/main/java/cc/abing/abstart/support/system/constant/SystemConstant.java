@@ -3,6 +3,11 @@ package cc.abing.abstart.support.system.constant;
 public class SystemConstant {
 
     /**
+     * 包名前缀
+     */
+    public static final String PACKAGE_PREFIX = "cc.abing.abstart.";
+
+    /**
      * API版本常量
      */
     public static final String API_VERSION = "v1";

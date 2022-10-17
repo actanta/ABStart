@@ -1,4 +1,6 @@
-package cc.abing.abstart.support.system.error;
+package cc.abing.abstart.support.system.exception;
+
+import cc.abing.abstart.support.system.response.CodeMsg;
 
 public class ABParamException extends ABException {
 
@@ -10,7 +12,7 @@ public class ABParamException extends ABException {
      * @param info 错误信息
      */
     public ABParamException(String info) {
-        super(CodeInfo.BAD_REQUEST, info);
+        super(CodeMsg.BAD_REQUEST, info);
     }
 
 }

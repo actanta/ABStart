@@ -1,6 +1,8 @@
-package cc.abing.abstart.support.system.error;
+package cc.abing.abstart.support.system.exception;
 
 import cc.abing.abstart.support.system.constant.SystemConstant;
+import cc.abing.abstart.support.system.response.ICodeMsg;
+import cc.abing.abstart.support.system.response.CodeMsg;
 
 public class ABException extends RuntimeException {
 
@@ -20,10 +22,10 @@ public class ABException extends RuntimeException {
      *
      * @param code 错误码枚举
      */
-    public ABException(Code code) {
-        super(code.getInfo());
+    public ABException(ICodeMsg code) {
+        super(code.getMsg());
         this.code = code.getCode();
-        this.info = code.getInfo();
+        this.info = code.getMsg();
     }
 
     /**
@@ -32,10 +34,10 @@ public class ABException extends RuntimeException {
      * @param code 错误码枚举
      * @param info 错误信息
      */
-    public ABException(Code code, String info) {
-        super(code.getInfo() + SystemConstant.COLON + info);
+    public ABException(ICodeMsg code, String info) {
+        super(code.getMsg() + SystemConstant.COLON + info);
         this.code = code.getCode();
-        this.info = code.getInfo() + SystemConstant.COLON + info;
+        this.info = code.getMsg() + SystemConstant.COLON + info;
     }
 
     /**
@@ -45,8 +47,8 @@ public class ABException extends RuntimeException {
      */
     public ABException(final Throwable cause) {
         super(cause);
-        this.code = CodeInfo.SYSTEM_ERR.getCode();
-        this.info = CodeInfo.SYSTEM_ERR.getInfo();
+        this.code = CodeMsg.SYSTEM_ERR.getCode();
+        this.info = CodeMsg.SYSTEM_ERR.getMsg();
     }
 
 

@@ -6,8 +6,8 @@ package cc.abing.abstart.aop;
 
 
 import cc.abing.abstart.support.system.constant.SystemConstant;
-import cc.abing.abstart.support.system.error.ABException;
-import cc.abing.abstart.support.system.error.CodeInfo;
+import cc.abing.abstart.support.system.exception.ABException;
+import cc.abing.abstart.support.system.response.CodeMsg;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,9 +44,14 @@ import java.util.Objects;
 public class LogAspect {
 
     /**
-     * 结果摘要日志模板
+     * 日志模板
      */
-    private final static String DIGEST_TEMPLATE = "[{}|{}|{}] userId=[{}] ip=[{}] method=[{}] consume=[{}ms] param=[{}] body=[{}] result=[{}]";
+    private final static String REQUEST_TEMPLATE = "[{}|{}|{}|{}] userId=[{}] ip=[{}] method=[{}] consume=[{}ms] param=[{}] body=[{}] result=[{}]";
+
+    /**
+     * 异常日志模板
+     */
+    private final static String EXCEPTION_TEMPLATE = "[{}|{}|{}|{}] userId=[{}] ip=[{}] method=[{}] param=[{}] body=[{}] exception=[{}]";
 
 
 
@@ -60,100 +65,86 @@ public class LogAspect {
     public Object doLog(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         //获取日志实体
         Logger logger = LoggerFactory.getLogger(proceedingJoinPoint.getTarget().getClass());
+        // 获取方法名称
+        String methodName = proceedingJoinPoint.getSignature().getName();
 
         //获取RequestAttributes
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         //从获取RequestAttributes中获取HttpServletRequest的信息
         HttpServletRequest request = (HttpServletRequest) Objects.requireNonNull(requestAttributes).resolveReference(RequestAttributes.REFERENCE_REQUEST);
         if(request == null){
-            throw new ABException(CodeInfo.BAD_REQUEST);
+            throw new ABException(CodeMsg.BAD_REQUEST);
         }
 
         // 获取请求信息
         String ip = parseIp(request);
         String httpMethod = request.getMethod();
         String uri = request.getRequestURI();
-
-        // 获取方法名称
-        String methodName = proceedingJoinPoint.getSignature().getName();
+        String timestamp = request.getHeader("timestamp");
 
         //获取Session
         HttpSession session = (HttpSession) requestAttributes.resolveReference(RequestAttributes.REFERENCE_SESSION);
+        String userId = (String) session.getAttribute("user_id");
         //获取所有get请求参数
-        Enumeration<String> parameterNames = request.getParameterNames();
-        Map<String,String> parameterMap = new HashMap<>(8);
-        while (parameterNames.hasMoreElements()){
-            String parameter = parameterNames.nextElement();
-            parameterMap.put(parameter, request.getParameter(parameter));
-        }
+        String param = getParam(request);
 
         long start = System.currentTimeMillis();
         Object result = proceedingJoinPoint.proceed();
+        long end = System.currentTimeMillis();
         //TODO 0.ObjectMapper单例化  1.序列化返回结果，去除null值。 2.可配置是否打印返回结果。
-        logger.info(DIGEST_TEMPLATE, parseResult(result), httpMethod, uri, null, ip, methodName,
-                System.currentTimeMillis() - start, parseParameterMap(parameterMap), read(request),
+        logger.info(REQUEST_TEMPLATE, parseResult(result), httpMethod, uri, timestamp, userId, ip, methodName,
+                end - start, param, read(request),
                 new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY).writeValueAsString(result));
         return result;
     }
 
-    @AfterThrowing(pointcut="doLog()",throwing="a")
-    public void doLog(JoinPoint joinPoint, Throwable a) throws Throwable {
+    @AfterThrowing(pointcut="doLog()",throwing="e")
+    public void doLog(JoinPoint joinPoint, Throwable e) throws Throwable {
         //获取日志实体
         Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
+        // 获取方法名称
+        String methodName = joinPoint.getSignature().getName();
 
         //获取RequestAttributes
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         //从获取RequestAttributes中获取HttpServletRequest的信息
         HttpServletRequest request = (HttpServletRequest) Objects.requireNonNull(requestAttributes).resolveReference(RequestAttributes.REFERENCE_REQUEST);
         if(request == null){
-            throw new ABException(CodeInfo.BAD_REQUEST);
+            throw new ABException(CodeMsg.BAD_REQUEST);
         }
 
         // 获取请求信息
         String ip = parseIp(request);
         String httpMethod = request.getMethod();
         String uri = request.getRequestURI();
+        String timestamp = request.getHeader("timestamp");
 
-        // 获取方法名称
-        String methodName = joinPoint.getSignature().getName();
 
         //获取Session
         HttpSession session = (HttpSession) requestAttributes.resolveReference(RequestAttributes.REFERENCE_SESSION);
+        String userId = (String) session.getAttribute("user_id");
         //获取所有get请求参数
-        Enumeration<String> parameterNames = request.getParameterNames();
-        Map<String,String> parameterMap = new HashMap<>(8);
-        while (parameterNames.hasMoreElements()){
-            String parameter = parameterNames.nextElement();
-            parameterMap.put(parameter, request.getParameter(parameter));
-        }
+        String param = getParam(request);
 
-        long start = System.currentTimeMillis();
         //TODO 0.ObjectMapper单例化  1.序列化返回结果，去除null值。 2.可配置是否打印返回结果。
-        logger.info(DIGEST_TEMPLATE, SystemConstant.FAIL, httpMethod, uri, null, ip, methodName,
-                System.currentTimeMillis() - start, parseParameterMap(parameterMap), read(request),a);
+        logger.info(EXCEPTION_TEMPLATE, SystemConstant.FAIL, httpMethod, uri, timestamp, userId, ip, methodName, param, read(request),e);
     }
+
+
 
 
     public static String read(HttpServletRequest request) throws IOException {
         BufferedReader bufferedReader = request.getReader();
-        StringWriter writer = new StringWriter();
-        write(bufferedReader, writer);
-        return writer.getBuffer().toString();
-    }
-    public static long write(Reader reader, Writer writer) throws IOException {
-        return write(reader, writer, 8192);
-    }
-
-    public static long write(Reader reader, Writer writer, int bufferSize) throws IOException {
+        StringWriter stringWriter = new StringWriter();
         long total = 0L;
 
         int read;
-        for(char[] buf = new char[bufferSize]; (read = reader.read(buf)) != -1; total += (long)read) {
-            writer.write(buf, 0, read);
+        for(char[] buf = new char[1024 * 10]; (read = bufferedReader.read(buf)) != -1; total += (long)read) {
+            stringWriter.write(buf, 0, read);
         }
-
-        return total;
+        return stringWriter.getBuffer().toString();
     }
+
     /**
      * 解析结果
      *
@@ -205,7 +196,13 @@ public class LogAspect {
     }
 
 
-    private static String parseParameterMap(Map<String,String> parameterMap){
+    private String getParam(HttpServletRequest request) {
+        Enumeration<String> parameterNames = request.getParameterNames();
+        Map<String,String> parameterMap = new HashMap<>(8);
+        while (parameterNames.hasMoreElements()){
+            String parameter = parameterNames.nextElement();
+            parameterMap.put(parameter, request.getParameter(parameter));
+        }
         StringBuilder stringBuilder = new StringBuilder(SystemConstant.LEFT_ANGLE_BRACKETS);
         for (String key : parameterMap.keySet()) {
             stringBuilder.append(key)
@@ -214,7 +211,6 @@ public class LogAspect {
                     .append(SystemConstant.COMMA);
         }
         return stringBuilder.append(SystemConstant.RIGHT_ANGLE_BRACKETS).toString();
-
     }
 
 

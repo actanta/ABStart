@@ -1,6 +1,6 @@
-package cc.abing.abstart.support.system.error;
+package cc.abing.abstart.support.system.response;
 
-public enum CodeInfo implements Code {
+public enum CodeMsg implements ICodeMsg {
 
     /**
      * 一切正常
@@ -31,11 +31,11 @@ public enum CodeInfo implements Code {
 
     private final String code;
 
-    private final String info;
+    private final String msg;
 
-    CodeInfo(String code, String info) {
+    CodeMsg(String code, String msg) {
         this.code = code;
-        this.info = info;
+        this.msg = msg;
     }
 
     @Override
@@ -44,7 +44,7 @@ public enum CodeInfo implements Code {
     }
 
     @Override
-    public String getInfo() {
-        return info;
+    public String getMsg() {
+        return msg;
     }
 }

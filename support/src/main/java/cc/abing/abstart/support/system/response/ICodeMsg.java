@@ -1,6 +1,6 @@
-package cc.abing.abstart.support.system.error;
+package cc.abing.abstart.support.system.response;
 
-public interface Code {
+public interface ICodeMsg {
 
     /**
      * 返回错误码
@@ -13,5 +13,5 @@ public interface Code {
      * 返回错误信息
      * @return 错误信息
      */
-    String getInfo();
+    String getMsg();
 }
