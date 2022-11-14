@@ -8,10 +8,10 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @author ABing
  */
 @SpringBootApplication
-public class ABStartApplication {
+public class MainApplication {
 
 	public static void main(String[] args) {
-		ConfigurableApplicationContext context = SpringApplication.run(ABStartApplication.class, args);
+		ConfigurableApplicationContext context = SpringApplication.run(MainApplication.class, args);
 		System.out.println(context.getClass());
 	}
 

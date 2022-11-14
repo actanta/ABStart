@@ -1,7 +1,6 @@
 package cc.abing.abstart.config;
 
-import cc.abing.abstart.support.system.exception.ABException;
-import cc.abing.abstart.support.system.exception.ABParamException;
+import cc.abing.abstart.support.system.exception.BizException;
 import cc.abing.abstart.support.system.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -35,8 +34,8 @@ public class ControllerExceptionHandler {
     }
 
 
-    @ExceptionHandler({ABException.class, ABParamException.class})
-    public Object handleBusinessException(ABException e) {
+    @ExceptionHandler({BizException.class})
+    public Object handleBusinessException(BizException e) {
         return logException("业务异常:"+e.getInfo(),e);
     }
 
@@ -57,7 +56,7 @@ public class ControllerExceptionHandler {
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             sb.append(fieldError.getField()).append("：").append(fieldError.getDefaultMessage()).append(", ");
         }
-        return Result.failed(log(sb.toString()));
+        return log(sb.toString());
     }
 
     @ExceptionHandler({ConstraintViolationException.class})
@@ -68,18 +67,18 @@ public class ControllerExceptionHandler {
                 .collect(Collectors.toList()));
         log.warn("请求地址:{}, 参数校验异常:{}", request.getRequestURI(), validateMsg);
         if (StringUtils.hasText(validateMsg)) {
-            return Result.failed(log(validateMsg));
+            return log(validateMsg);
         }
         return Result.failed();
     }
 
-    private String logException(String exceptionInfo,Exception e){
+    private Result logException(String exceptionInfo,Exception e){
         log.warn(exceptionInfo,e);
-        return exceptionInfo;
+        return Result.failed(exceptionInfo);
     }
 
-    private String log(String exceptionInfo){
+    private Result log(String exceptionInfo){
         log.info(exceptionInfo);
-        return exceptionInfo;
+        return Result.failed(exceptionInfo);
     }
 }

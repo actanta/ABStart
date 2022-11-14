@@ -4,7 +4,7 @@ import cc.abing.abstart.support.system.constant.SystemConstant;
 import cc.abing.abstart.support.system.response.ICodeMsg;
 import cc.abing.abstart.support.system.response.CodeMsg;
 
-public class ABException extends RuntimeException {
+public class BizException extends RuntimeException {
 
     private static final long serialVersionUID = -8551154617416340632L;
     /**
@@ -22,7 +22,7 @@ public class ABException extends RuntimeException {
      *
      * @param code 错误码枚举
      */
-    public ABException(ICodeMsg code) {
+    public BizException(ICodeMsg code) {
         super(code.getMsg());
         this.code = code.getCode();
         this.info = code.getMsg();
@@ -34,7 +34,7 @@ public class ABException extends RuntimeException {
      * @param code 错误码枚举
      * @param info 错误信息
      */
-    public ABException(ICodeMsg code, String info) {
+    public BizException(ICodeMsg code, String info) {
         super(code.getMsg() + SystemConstant.COLON + info);
         this.code = code.getCode();
         this.info = code.getMsg() + SystemConstant.COLON + info;
@@ -45,7 +45,7 @@ public class ABException extends RuntimeException {
      *
      * @param cause 错误异常类
      */
-    public ABException(final Throwable cause) {
+    public BizException(final Throwable cause) {
         super(cause);
         this.code = CodeMsg.SYSTEM_ERR.getCode();
         this.info = CodeMsg.SYSTEM_ERR.getMsg();

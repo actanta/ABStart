@@ -6,7 +6,7 @@ package cc.abing.abstart.aop;
 
 
 import cc.abing.abstart.support.system.constant.SystemConstant;
-import cc.abing.abstart.support.system.exception.ABException;
+import cc.abing.abstart.support.system.exception.BizException;
 import cc.abing.abstart.support.system.response.CodeMsg;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -73,7 +73,7 @@ public class LogAspect {
         //从获取RequestAttributes中获取HttpServletRequest的信息
         HttpServletRequest request = (HttpServletRequest) Objects.requireNonNull(requestAttributes).resolveReference(RequestAttributes.REFERENCE_REQUEST);
         if(request == null){
-            throw new ABException(CodeMsg.BAD_REQUEST);
+            throw new BizException(CodeMsg.BAD_REQUEST);
         }
 
         // 获取请求信息
@@ -110,7 +110,7 @@ public class LogAspect {
         //从获取RequestAttributes中获取HttpServletRequest的信息
         HttpServletRequest request = (HttpServletRequest) Objects.requireNonNull(requestAttributes).resolveReference(RequestAttributes.REFERENCE_REQUEST);
         if(request == null){
-            throw new ABException(CodeMsg.BAD_REQUEST);
+            throw new BizException(CodeMsg.BAD_REQUEST);
         }
 
         // 获取请求信息

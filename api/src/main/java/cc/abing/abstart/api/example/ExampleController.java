@@ -36,7 +36,7 @@ public class ExampleController {
             @RequestParam(value = "start_create_time", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startCreateTime,
             @RequestParam(value = "end_create_time", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endCreateTime,
             @RequestParam(value = "page_index", required = false, defaultValue = "1") Integer pageIndex,
-            @Valid @Max(value = SystemConstant.PAGE_SIZE,message = "page_size超过最大值") @RequestParam(value = "page_size", required = false, defaultValue = "20") Integer pageSize) {
+            @Valid @Max(value = 50,message = "page_size超过最大值") @RequestParam(value = "page_size", required = false, defaultValue = "20") Integer pageSize) {
         return exampleService.listExampleDO(id, startCreateTime, endCreateTime, pageIndex, pageSize);
     }
 
