@@ -16,23 +16,24 @@ import java.util.Date;
 @TableName(value = "example", schema = "abstart")
 public class ExampleDO implements Serializable {
 
-    private static final long serialVersionUID = -4164424827871435176L;
+	private static final long serialVersionUID = -4164424827871435176L;
 
-    @TableId
-    private Long id;
+	@TableId
+	private Long id;
 
-    @Length(max = 20, message = "字符串限制20位")
-    private String string;
+	@Length(max = 20, message = "字符串限制20位")
+	private String string;
 
-    private Boolean bool;
+	private Boolean bool;
 
-    private Byte[] ipv6;
+	private Byte[] ipv6;
 
-    private Date createTime;
+	private Date createTime;
 
-    private Date modifyTime;
+	private Date modifyTime;
 
-    private BigDecimal num1;
+	private BigDecimal num1;
 
-    private Float num2;
+	private Float num2;
+
 }

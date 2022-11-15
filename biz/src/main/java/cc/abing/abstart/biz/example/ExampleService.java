@@ -9,39 +9,42 @@ import java.util.List;
 
 public interface ExampleService {
 
-    /**
-     * 获取ExampleDO列表
-     * @return
-     */
-    List<ExampleDO> listExampleDO(Long id, Date startCreateTime, Date endCreateTime, Integer pageIndex, Integer pageSize);
+	/**
+	 * 获取ExampleDO列表
+	 * @return
+	 */
+	List<ExampleDO> listExampleDO(Long id, Date startCreateTime, Date endCreateTime, Integer pageIndex,
+			Integer pageSize);
 
-    /**
-     * 获取ExampleDO分页
-     */
-    Page<ExampleDO> pageExampleDO(Long id, Date startCreateTime, Date endCreateTime, Integer pageIndex, Integer pageSize);
+	/**
+	 * 获取ExampleDO分页
+	 */
+	Page<ExampleDO> pageExampleDO(Long id, Date startCreateTime, Date endCreateTime, Integer pageIndex,
+			Integer pageSize);
 
-    /**
-     * 获取ExampleDO分页
-     */
-    Page<ExampleDO> pageExampleDO(ExampleRequest request);
+	/**
+	 * 获取ExampleDO分页
+	 */
+	Page<ExampleDO> pageExampleDO(ExampleRequest request);
 
-    /**
-     * 创建ExampleDO
-     */
-    Integer createExampleDO(ExampleRequest request);
+	/**
+	 * 创建ExampleDO
+	 */
+	Integer createExampleDO(ExampleRequest request);
 
-    /**
-     * 修改ExampleDO
-     */
-    Integer modifyExampleDO(ExampleRequest request);
+	/**
+	 * 修改ExampleDO
+	 */
+	Integer modifyExampleDO(ExampleRequest request);
 
-    /**
-     * 更新ExampleDO
-     */
-    Integer updateExampleDO(ExampleRequest request);
+	/**
+	 * 更新ExampleDO
+	 */
+	Integer updateExampleDO(ExampleRequest request);
 
-    /**
-     * 删除ExampleDO
-     */
-    Integer deleteExampleDO(ExampleRequest request);
+	/**
+	 * 删除ExampleDO
+	 */
+	Integer deleteExampleDO(ExampleRequest request);
+
 }

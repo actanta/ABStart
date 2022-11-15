@@ -28,57 +28,56 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
-    @ExceptionHandler
-    public Object handleException(Exception e) {
-        return logException("系统异常:"+e.getMessage(),e);
-    }
+	@ExceptionHandler
+	public Object handleException(Exception e) {
+		return logException("系统异常:" + e.getMessage(), e);
+	}
 
+	@ExceptionHandler({ BizException.class })
+	public Object handleBusinessException(BizException e) {
+		return logException("业务异常:" + e.getInfo(), e);
+	}
 
-    @ExceptionHandler({BizException.class})
-    public Object handleBusinessException(BizException e) {
-        return logException("业务异常:"+e.getInfo(),e);
-    }
+	@ExceptionHandler(MissingServletRequestParameterException.class)
+	public Object handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+		return log("缺少参数:" + e.getMessage());
+	}
 
-    @ExceptionHandler(MissingServletRequestParameterException.class)
-    public Object handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
-        return log("缺少参数:"+e.getMessage());
-    }
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public Object handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+		return log("参数错误:" + e.getMessage());
+	}
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public Object handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-        return log("参数错误:"+e.getMessage());
-    }
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public Object handleMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
+		BindingResult bindingResult = e.getBindingResult();
+		StringBuilder sb = new StringBuilder("请求地址:" + request.getRequestURI() + ", 参数校验异常:");
+		for (FieldError fieldError : bindingResult.getFieldErrors()) {
+			sb.append(fieldError.getField()).append("：").append(fieldError.getDefaultMessage()).append(", ");
+		}
+		return log(sb.toString());
+	}
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Object handleMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
-        BindingResult bindingResult = e.getBindingResult();
-        StringBuilder sb = new StringBuilder("请求地址:" + request.getRequestURI() + ", 参数校验异常:");
-        for (FieldError fieldError : bindingResult.getFieldErrors()) {
-            sb.append(fieldError.getField()).append("：").append(fieldError.getDefaultMessage()).append(", ");
-        }
-        return log(sb.toString());
-    }
+	@ExceptionHandler({ ConstraintViolationException.class })
+	public Result<?> handleConstraintViolationException(HttpServletRequest request, ConstraintViolationException e) {
+		Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+		String validateMsg = String.valueOf(
+				constraintViolations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toList()));
+		log.warn("请求地址:{}, 参数校验异常:{}", request.getRequestURI(), validateMsg);
+		if (StringUtils.hasText(validateMsg)) {
+			return log(validateMsg);
+		}
+		return Result.failed();
+	}
 
-    @ExceptionHandler({ConstraintViolationException.class})
-    public Result<?> handleConstraintViolationException(HttpServletRequest request,ConstraintViolationException e) {
-        Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
-        String validateMsg = String.valueOf(constraintViolations.stream()
-                .map(ConstraintViolation::getMessage)
-                .collect(Collectors.toList()));
-        log.warn("请求地址:{}, 参数校验异常:{}", request.getRequestURI(), validateMsg);
-        if (StringUtils.hasText(validateMsg)) {
-            return log(validateMsg);
-        }
-        return Result.failed();
-    }
+	private Result logException(String exceptionInfo, Exception e) {
+		log.warn(exceptionInfo, e);
+		return Result.failed(exceptionInfo);
+	}
 
-    private Result logException(String exceptionInfo,Exception e){
-        log.warn(exceptionInfo,e);
-        return Result.failed(exceptionInfo);
-    }
+	private Result log(String exceptionInfo) {
+		log.info(exceptionInfo);
+		return Result.failed(exceptionInfo);
+	}
 
-    private Result log(String exceptionInfo){
-        log.info(exceptionInfo);
-        return Result.failed(exceptionInfo);
-    }
 }

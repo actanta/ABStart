@@ -11,13 +11,14 @@ import org.mapstruct.factory.Mappers;
  */
 @Mapper
 public interface ExampleConverter {
-    ExampleConverter M = Mappers.getMapper(ExampleConverter.class);
 
-    /**
-     * ExampleRequest -> ExampleDO 转换器
-     *
-     * @param request
-     * @return
-     */
-    ExampleDO convert(ExampleRequest request);
+	ExampleConverter M = Mappers.getMapper(ExampleConverter.class);
+
+	/**
+	 * ExampleRequest -> ExampleDO 转换器
+	 * @param request
+	 * @return
+	 */
+	ExampleDO convert(ExampleRequest request);
+
 }

@@ -22,47 +22,48 @@ import java.util.List;
 @RequestMapping(SystemConstant.BASE_PATH + "/example")
 public class ExampleController {
 
-    private final ExampleService exampleService;
+	private final ExampleService exampleService;
 
-    @Autowired
-    public ExampleController(ExampleService exampleService) {
-        this.exampleService = exampleService;
-    }
+	@Autowired
+	public ExampleController(ExampleService exampleService) {
+		this.exampleService = exampleService;
+	}
 
+	@GetMapping(value = "/list")
+	public List<ExampleDO> listExampleDO(@RequestParam(value = "id", required = false) Long id,
+			@RequestParam(value = "start_create_time",
+					required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startCreateTime,
+			@RequestParam(value = "end_create_time",
+					required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endCreateTime,
+			@RequestParam(value = "page_index", required = false, defaultValue = "1") Integer pageIndex,
+			@Valid @Max(value = 50, message = "page_size超过最大值") @RequestParam(value = "page_size", required = false,
+					defaultValue = "20") Integer pageSize) {
+		return exampleService.listExampleDO(id, startCreateTime, endCreateTime, pageIndex, pageSize);
+	}
 
-    @GetMapping(value = "/list")
-    public List<ExampleDO> listExampleDO(
-            @RequestParam(value = "id", required = false) Long id,
-            @RequestParam(value = "start_create_time", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startCreateTime,
-            @RequestParam(value = "end_create_time", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endCreateTime,
-            @RequestParam(value = "page_index", required = false, defaultValue = "1") Integer pageIndex,
-            @Valid @Max(value = 50,message = "page_size超过最大值") @RequestParam(value = "page_size", required = false, defaultValue = "20") Integer pageSize) {
-        return exampleService.listExampleDO(id, startCreateTime, endCreateTime, pageIndex, pageSize);
-    }
+	@GetMapping(value = "/page")
+	public Page<ExampleDO> pageExampleDO(ExampleRequest request) {
+		return exampleService.pageExampleDO(request);
+	}
 
-    @GetMapping(value = "/page")
-    public Page<ExampleDO> pageExampleDO(ExampleRequest request) {
-        return exampleService.pageExampleDO(request);
-    }
+	@PostMapping(value = "/")
+	public Integer createExampleDO(@Valid @RequestBody ExampleRequest request) {
+		return exampleService.createExampleDO(request);
+	}
 
-    @PostMapping(value = "/")
-    public Integer createExampleDO(@Valid @RequestBody ExampleRequest request) {
-        return exampleService.createExampleDO(request);
-    }
+	@PatchMapping(value = "/")
+	public Integer modifyExampleDO(@RequestBody ExampleRequest request) {
+		return exampleService.modifyExampleDO(request);
+	}
 
-    @PatchMapping(value = "/")
-    public Integer modifyExampleDO(@RequestBody ExampleRequest request) {
-        return exampleService.modifyExampleDO(request);
-    }
+	@PutMapping(value = "/")
+	public Integer updateExampleDO(@RequestBody ExampleRequest request) {
+		return exampleService.updateExampleDO(request);
+	}
 
-    @PutMapping(value = "/")
-    public Integer updateExampleDO(@RequestBody ExampleRequest request) {
-        return exampleService.updateExampleDO(request);
-    }
-
-    @DeleteMapping(value = "/")
-    public Integer deleteExampleDO(@RequestBody ExampleRequest request) {
-        return exampleService.deleteExampleDO(request);
-    }
+	@DeleteMapping(value = "/")
+	public Integer deleteExampleDO(@RequestBody ExampleRequest request) {
+		return exampleService.deleteExampleDO(request);
+	}
 
 }

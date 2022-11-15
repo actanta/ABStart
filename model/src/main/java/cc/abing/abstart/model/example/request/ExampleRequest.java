@@ -10,58 +10,58 @@ import java.util.Date;
  */
 public class ExampleRequest extends ExampleDO {
 
-    private static final long serialVersionUID = 5281182393661410801L;
+	private static final long serialVersionUID = 5281182393661410801L;
 
-    private Date startCreateTime;
+	private Date startCreateTime;
 
-    private Date endCreateTime;
+	private Date endCreateTime;
 
-    /**
-     * 分页页码
-     */
-    protected Integer pageIndex = 1;
+	/**
+	 * 分页页码
+	 */
+	protected Integer pageIndex = 1;
 
+	/**
+	 * 分页大小
+	 */
+	protected Integer pageSize = 20;
 
-    /**
-     * 分页大小
-     */
-    protected Integer pageSize = 20;
+	public Date getStartCreateTime() {
+		return startCreateTime;
+	}
 
-    public Date getStartCreateTime() {
-        return startCreateTime;
-    }
+	public void setStartCreateTime(Date startCreateTime) {
+		this.startCreateTime = startCreateTime;
+	}
 
-    public void setStartCreateTime(Date startCreateTime) {
-        this.startCreateTime = startCreateTime;
-    }
+	public Date getEndCreateTime() {
+		return endCreateTime;
+	}
 
-    public Date getEndCreateTime() {
-        return endCreateTime;
-    }
+	public void setEndCreateTime(Date endCreateTime) {
+		this.endCreateTime = endCreateTime;
+	}
 
-    public void setEndCreateTime(Date endCreateTime) {
-        this.endCreateTime = endCreateTime;
-    }
+	public Integer getPageIndex() {
+		return pageIndex;
+	}
 
-    public Integer getPageIndex() {
-        return pageIndex;
-    }
+	public Integer getPageSize() {
+		return pageSize;
+	}
 
-    public Integer getPageSize() {
-        return pageSize;
-    }
+	public void setPageIndex(Integer pageIndex) {
+		if (null == pageIndex || pageIndex <= 0) {
+			pageIndex = 1;
+		}
+		this.pageIndex = pageIndex;
+	}
 
-    public void setPageIndex(Integer pageIndex) {
-        if (null == pageIndex || pageIndex <= 0) {
-            pageIndex = 1;
-        }
-        this.pageIndex = pageIndex;
-    }
+	public void setPageSize(Integer pageSize) {
+		if (null == pageSize || pageSize <= 0) {
+			pageSize = 20;
+		}
+		this.pageSize = pageSize;
+	}
 
-    public void setPageSize(Integer pageSize) {
-        if (null == pageSize || pageSize <= 0) {
-            pageSize = 20;
-        }
-        this.pageSize = pageSize;
-    }
 }
