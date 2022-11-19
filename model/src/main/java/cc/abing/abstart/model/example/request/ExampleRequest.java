@@ -2,6 +2,7 @@ package cc.abing.abstart.model.example.request;
 
 import cc.abing.abstart.model.example.ExampleDO;
 
+import javax.validation.constraints.Max;
 import java.util.Date;
 
 /**
@@ -12,8 +13,14 @@ public class ExampleRequest extends ExampleDO {
 
 	private static final long serialVersionUID = 5281182393661410801L;
 
+	/**
+	 * 创建时间开始
+	 */
 	private Date startCreateTime;
 
+	/**
+	 * 创建时间结束
+	 */
 	private Date endCreateTime;
 
 	/**
@@ -24,6 +31,7 @@ public class ExampleRequest extends ExampleDO {
 	/**
 	 * 分页大小
 	 */
+	@Max(value = 50, message = "page_size超过最大值")
 	protected Integer pageSize = 20;
 
 	public Date getStartCreateTime() {

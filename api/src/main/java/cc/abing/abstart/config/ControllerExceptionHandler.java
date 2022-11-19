@@ -72,11 +72,13 @@ public class ControllerExceptionHandler {
 
 	private Result logException(String exceptionInfo, Exception e) {
 		log.warn(exceptionInfo, e);
+		// TODO 生产环境应直接返回Result.failed()
 		return Result.failed(exceptionInfo);
 	}
 
 	private Result log(String exceptionInfo) {
 		log.info(exceptionInfo);
+		// TODO 生产环境应直接返回Result.failed()
 		return Result.failed(exceptionInfo);
 	}
 

@@ -29,6 +29,15 @@ public class ExampleController {
 		this.exampleService = exampleService;
 	}
 
+	/**
+	 * 查询ExampleDO列表
+	 * @param id 序号
+	 * @param startCreateTime 创建时间开始
+	 * @param endCreateTime 创建时间结束
+	 * @param pageIndex 分页页码
+	 * @param pageSize 分页大小
+	 * @return
+	 */
 	@GetMapping(value = "/list")
 	public List<ExampleDO> listExampleDO(@RequestParam(value = "id", required = false) Long id,
 			@RequestParam(value = "start_create_time",
@@ -42,7 +51,7 @@ public class ExampleController {
 	}
 
 	@GetMapping(value = "/page")
-	public Page<ExampleDO> pageExampleDO(ExampleRequest request) {
+	public Page<ExampleDO> pageExampleDO(@Valid ExampleRequest request) {
 		return exampleService.pageExampleDO(request);
 	}
 
@@ -52,17 +61,17 @@ public class ExampleController {
 	}
 
 	@PatchMapping(value = "/")
-	public Integer modifyExampleDO(@RequestBody ExampleRequest request) {
+	public Integer modifyExampleDO(@Valid @RequestBody ExampleRequest request) {
 		return exampleService.modifyExampleDO(request);
 	}
 
 	@PutMapping(value = "/")
-	public Integer updateExampleDO(@RequestBody ExampleRequest request) {
+	public Integer updateExampleDO(@Valid @RequestBody ExampleRequest request) {
 		return exampleService.updateExampleDO(request);
 	}
 
 	@DeleteMapping(value = "/")
-	public Integer deleteExampleDO(@RequestBody ExampleRequest request) {
+	public Integer deleteExampleDO(@Valid @RequestBody ExampleRequest request) {
 		return exampleService.deleteExampleDO(request);
 	}
 
