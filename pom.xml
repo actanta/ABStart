@@ -12,10 +12,16 @@
 
 	<groupId>cc.abing</groupId>
 	<artifactId>abstart-parent</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${revision}</version>
 	<name>ABStart</name>
 	<description>A Simple Spring Boot Project</description>
 	<packaging>pom</packaging>
+
+
+	<properties>
+		<!--版本号-->
+		<revision>0.0.1-SNAPSHOT</revision>
+	</properties>
 
 	<modules>
 		<module>api</module>
@@ -32,32 +38,32 @@
 			<dependency>
 				<groupId>cc.abing</groupId>
 				<artifactId>abstart-api</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>cc.abing</groupId>
 				<artifactId>abstart-biz</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>cc.abing</groupId>
 				<artifactId>abstart-dao</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>cc.abing</groupId>
 				<artifactId>abstart-model</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>cc.abing</groupId>
 				<artifactId>abstart-support</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>cc.abing</groupId>
 				<artifactId>abstart-util</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${revision}</version>
 			</dependency>
 			<!--子模块-END-->
 
@@ -99,6 +105,11 @@
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
 				<version>3.9</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>31.1-jre</version>
 			</dependency>
 			<!-- 三方库-END-->
 		</dependencies>

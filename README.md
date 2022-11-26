@@ -25,6 +25,10 @@ A Simple Spring Boot Project
 14. 异常日志展示时显示为红色字体
 15. Docker部署
 16. 代码生成工具
+17. 动态版本号 mvn package -Drevision=1.0.0RELEASE
+18. docker push,harbor:dockerfile-maven-plugin
+19. mvn deploy，releases|snapshots包deploy到私服不同位置:distributionManagement
+20. 线程池优雅关闭，自定义类优雅关闭（Java服务实现优雅的关闭：ShutdownHook/Signal回调https://www.jianshu.com/p/38101bff6c29）
 
 ## CHECK
 1. 分页插件提示，确认是否有缓存问题：新的分页插件,一缓和二缓遵循mybatis的规则,需要设置 MybatisConfiguration#useDeprecatedExecutor = false 避免缓存出现问题(该属性会在旧插件移除后一同移除)
