@@ -1,6 +1,6 @@
-package cc.abing.abstart.api.example;
+package cc.abing.abstart.api.controller;
 
-import cc.abing.abstart.biz.example.ExampleService;
+import cc.abing.abstart.biz.service.ExampleService;
 import cc.abing.abstart.model.example.ExampleDO;
 import cc.abing.abstart.model.example.request.ExampleRequest;
 import cc.abing.abstart.support.system.constant.SystemConstant;

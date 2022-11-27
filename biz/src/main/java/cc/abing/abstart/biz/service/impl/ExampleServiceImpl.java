@@ -1,7 +1,7 @@
-package cc.abing.abstart.biz.example.impl;
+package cc.abing.abstart.biz.service.impl;
 
-import cc.abing.abstart.biz.example.ExampleService;
-import cc.abing.abstart.dao.example.ExampleMapper;
+import cc.abing.abstart.biz.service.ExampleService;
+import cc.abing.abstart.dao.mapper.ExampleMapper;
 import cc.abing.abstart.model.example.ExampleDO;
 import cc.abing.abstart.model.example.converter.ExampleConverter;
 import cc.abing.abstart.model.example.request.ExampleRequest;

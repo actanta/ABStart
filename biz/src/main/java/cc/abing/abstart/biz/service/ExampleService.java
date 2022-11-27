@@ -1,4 +1,4 @@
-package cc.abing.abstart.biz.example;
+package cc.abing.abstart.biz.service;
 
 import cc.abing.abstart.model.example.ExampleDO;
 import cc.abing.abstart.model.example.request.ExampleRequest;

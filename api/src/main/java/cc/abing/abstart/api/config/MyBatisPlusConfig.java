@@ -1,4 +1,4 @@
-package cc.abing.abstart.config;
+package cc.abing.abstart.api.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;

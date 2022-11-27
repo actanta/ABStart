@@ -2,7 +2,7 @@
   betahouse.us
   CopyRight (c) 2012 - 2018
  */
-package cc.abing.abstart.aop;
+package cc.abing.abstart.api.aop;
 
 import cc.abing.abstart.support.system.constant.SystemConstant;
 import cc.abing.abstart.support.system.exception.BizException;

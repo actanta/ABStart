@@ -1,4 +1,4 @@
-package cc.abing.abstart.aop;
+package cc.abing.abstart.api.aop;
 
 import cc.abing.abstart.support.system.constant.SystemConstant;
 import cc.abing.abstart.support.system.result.Result;

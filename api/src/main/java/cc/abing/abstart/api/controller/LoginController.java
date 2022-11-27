@@ -1,4 +1,4 @@
-package cc.abing.abstart.api.login;
+package cc.abing.abstart.api.controller;
 
 import cc.abing.abstart.support.system.constant.SystemConstant;
 import com.google.common.base.Charsets;

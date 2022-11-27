@@ -1,4 +1,4 @@
-package cc.abing.abstart.config;
+package cc.abing.abstart.api.config;
 
 import cc.abing.abstart.support.system.exception.BizException;
 import cc.abing.abstart.support.system.result.Result;
