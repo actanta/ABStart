@@ -1,4 +1,4 @@
-package cc.abing.abstart.api;
+package cc.abing.abstart;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

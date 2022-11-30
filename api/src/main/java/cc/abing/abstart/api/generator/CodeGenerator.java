@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.google.common.base.CaseFormat;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -49,8 +51,10 @@ public class CodeGenerator {
 		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		DB_URL = "jdbc:mysql://localhost:3306/" + DB_NAME
-				+ "?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC%2B0&zeroDateTimeBehavior=convertToNull";
+		// DB_URL = "jdbc:mysql://localhost:3306/" + DB_NAME
+		// +
+		// "?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC%2B0&zeroDateTimeBehavior=convertToNull";
+		DB_URL = properties.getProperty("spring.datasource.dynamic.datasource.mysql.url");
 		DB_USERNAME = properties.getProperty("spring.datasource.dynamic.datasource.mysql.username");
 		DB_PASSWORD = properties.getProperty("spring.datasource.dynamic.datasource.mysql.password");
 		System.out.printf("读取数据库配置：%s\n账号密码：%s@%s\n表：%s.%s%n", DB_URL, DB_USERNAME, DB_PASSWORD, DB_NAME, TABLE_NAME);
@@ -88,6 +92,10 @@ public class CodeGenerator {
 				put(OutputFile.serviceImpl, USER_DIR + "/biz/src/main/java/" + PACKAGE_PATH + "/biz/service/impl");
 				put(OutputFile.entity, USER_DIR + "/model/src/main/java/" + PACKAGE_PATH + "/model/" + TABLE_NAME);
 				put(OutputFile.xml, USER_DIR + "/dao/src/main/resources/mapper");
+				// other:
+				// /USER_DIR/model/src/main/java/PACKAGE_PATH/model/TABLE_NAME/common/${entity}/${injectionConfig.customFileMap.key}
+				put(OutputFile.other,
+						USER_DIR + "/model/src/main/java/" + PACKAGE_PATH + "/model/" + TABLE_NAME + "/common");
 			}
 		};
 		// 打印输出路径
@@ -97,7 +105,7 @@ public class CodeGenerator {
 		pathInfoMap.forEach((key, value) -> System.out.println(key.name() + ":" + value));
 
 		FastAutoGenerator.create(dataSourceConfigBuilder).globalConfig(builder -> {
-			builder.author("CodeGenerator").outputDir(outputDir).disableOpenDir();
+			builder.author("CodeGenerator").outputDir(outputDir).disableOpenDir().dateType(DateType.ONLY_DATE);
 		})
 				// 包名配置
 				.packageConfig(builder -> {
@@ -108,20 +116,37 @@ public class CodeGenerator {
 				// 自定义策略配置 .enableChainModel().addTableFills(new Column("create_time",
 				// FieldFill.INSERT))
 				.strategyConfig(builder -> {
-					builder.addInclude(TABLE_NAME).addTablePrefix(TABLE_PREFIX).enableSchema().controllerBuilder()
-							.enableRestStyle().serviceBuilder().formatServiceFileName("%sService").mapperBuilder()
-							.enableMapperAnnotation().entityBuilder().idType(IdType.AUTO).formatFileName("%sDO");
+					builder.addInclude(TABLE_NAME).addTablePrefix(TABLE_PREFIX).enableSchema()
+							// controller
+							.controllerBuilder().enableRestStyle()
+							// service
+							.serviceBuilder().formatServiceFileName("%sService")
+							// mapper
+							.mapperBuilder().enableMapperAnnotation()
+							// entity
+							.entityBuilder().idType(IdType.AUTO).formatFileName("%sDO");
 				})
 
 				// 注入自定义变量
 				.injectionConfig(builder -> {
-					builder.fileOverride().customMap(new HashMap<String, Object>() {
-						private static final long serialVersionUID = 93318932588682129L;
-
+					builder.customFile(new HashMap<String, String>() {
+						{
+							// 指定自定义模板文件路径<输出文件名，模板路径>
+							put("../" + CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, TABLE_NAME)
+									+ "Converter.java", "/templates/converter.java.ftl");
+							put("../" + CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, TABLE_NAME)
+									+ "Request.java", "/templates/request.java.ftl");
+						}
+					}).customMap(new HashMap<String, Object>() {
 						{
 							put("MyComment", "自定义变量值");
 						}
-					});
+					}).beforeOutputFile((tableInfo, map) -> {
+						System.out.println("【CodeGenerator变量map】");
+						map.forEach((key, value) -> System.out.println(key + '=' + value));
+					})
+					// .fileOverride()
+					;
 				})
 
 				// 指定模板文件路径

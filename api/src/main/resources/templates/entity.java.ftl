@@ -14,6 +14,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
     </#if>
 </#if>
+import java.util.Date;
 
 /**
  * <p>

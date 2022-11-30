@@ -26,12 +26,13 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.*;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author userz
@@ -44,23 +45,23 @@ public class LogAspect {
 	/**
 	 * 日志模板
 	 */
-	private final static String REQUEST_TEMPLATE = "[{}|{}|{}|{}] userId=[{}] ip=[{}] method=[{}] consume=[{}ms] param=[{}] body=[{}] result=[{}]";
+	private final static String REQUEST_TEMPLATE = "[{}|{}|{}|{}] userId=[{}] ip=[{}] method=[{}] consume=[{}ms] param=[{}] body={} result=[{}]";
 
 	/**
 	 * 异常日志模板
 	 */
-	private final static String EXCEPTION_TEMPLATE = "[{}|{}|{}|{}] userId=[{}] ip=[{}] method=[{}] param=[{}] body=[{}] exception=[{}]";
+	private final static String EXCEPTION_TEMPLATE = "[{}|{}|{}|{}] userId=[{}] ip=[{}] method=[{}] param=[{}] body={} exception=[{}]";
 
-	@Pointcut("execution(* cc.abing.abstart.api..*(..))")
+	@Pointcut("execution(* cc.abing.abstart.api.controller..*(..))")
 	public void doLog() {
 	}
 
 	@Around("doLog()")
-	public Object doLog(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+	public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable {
 		// 获取日志实体
-		Logger logger = LoggerFactory.getLogger(proceedingJoinPoint.getTarget().getClass());
+		Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
 		// 获取方法名称
-		String methodName = proceedingJoinPoint.getSignature().getName();
+		String methodName = joinPoint.getSignature().getName();
 
 		// 获取RequestAttributes
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
@@ -80,15 +81,20 @@ public class LogAspect {
 		// 获取Session
 		HttpSession session = (HttpSession) requestAttributes.resolveReference(RequestAttributes.REFERENCE_SESSION);
 		String userId = (String) session.getAttribute("user_id");
-		// 获取所有get请求参数
+		// 获取请求参数
 		String param = getParam(request);
+		Object arg = Arrays.stream(joinPoint.getArgs()).filter(Objects::nonNull)
+				.filter(i -> !(i instanceof HttpServletRequest)).filter(i -> !(i instanceof HttpServletResponse))
+				.collect(Collectors.toList());
+		String body = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+				.writeValueAsString(arg);
 
 		long start = System.currentTimeMillis();
-		Object result = proceedingJoinPoint.proceed();
+		Object result = joinPoint.proceed();
 		long end = System.currentTimeMillis();
 		// TODO 0.ObjectMapper单例化 1.序列化返回结果，去除null值。 2.可配置是否打印返回结果。
 		logger.info(REQUEST_TEMPLATE, parseResult(result), httpMethod, uri, timestamp, userId, ip, methodName,
-				end - start, param, read(request),
+				end - start, param, body,
 				new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY).writeValueAsString(result));
 		return result;
 	}
@@ -118,12 +124,18 @@ public class LogAspect {
 		// 获取Session
 		HttpSession session = (HttpSession) requestAttributes.resolveReference(RequestAttributes.REFERENCE_SESSION);
 		String userId = (String) session.getAttribute("user_id");
-		// 获取所有get请求参数
+		// 获取请求参数
+		// 获取请求参数
 		String param = getParam(request);
+		Object arg = Arrays.stream(joinPoint.getArgs()).filter(Objects::nonNull)
+				.filter(i -> !(i instanceof HttpServletRequest)).filter(i -> !(i instanceof HttpServletResponse))
+				.collect(Collectors.toList());
+		String body = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+				.writeValueAsString(arg);
 
 		// TODO 0.ObjectMapper单例化 1.序列化返回结果，去除null值。 2.可配置是否打印返回结果。
 		logger.info(EXCEPTION_TEMPLATE, SystemConstant.FAIL, httpMethod, uri, timestamp, userId, ip, methodName, param,
-				read(request), e);
+				body, e.getMessage());
 	}
 
 	public static String read(HttpServletRequest request) throws IOException {
