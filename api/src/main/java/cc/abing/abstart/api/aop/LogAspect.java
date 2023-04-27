@@ -7,6 +7,7 @@ package cc.abing.abstart.api.aop;
 import cc.abing.abstart.support.system.constant.SystemConstant;
 import cc.abing.abstart.support.system.exception.BizException;
 import cc.abing.abstart.support.system.response.CodeMsg;
+import cc.abing.abstart.support.system.result.Result;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -81,7 +82,7 @@ public class LogAspect {
 		// 获取Session
 		HttpSession session = (HttpSession) requestAttributes.resolveReference(RequestAttributes.REFERENCE_SESSION);
 		String userId = (String) session.getAttribute("user_id");
-		// 获取请求参数
+		// 获取请求参数 TODO 可能同时打印param和body，待完善
 		String param = getParam(request);
 		Object arg = Arrays.stream(joinPoint.getArgs()).filter(Objects::nonNull)
 				.filter(i -> !(i instanceof HttpServletRequest)).filter(i -> !(i instanceof HttpServletResponse))
@@ -156,13 +157,17 @@ public class LogAspect {
 	 * @return
 	 */
 	private String parseResult(Object result) {
+		Boolean status = null;
 		if (result instanceof ResponseEntity) {
-			return HttpStatus.OK.equals(((ResponseEntity) result).getStatusCode()) ? SystemConstant.SUCCESS
-					: SystemConstant.FAIL;
+			status = HttpStatus.OK.equals(((ResponseEntity) result).getStatusCode());
+		} else if (result instanceof Result) {
+			status = CodeMsg.SYSTEM_OK.getCode().equals(((Result<?>) result).getCode());
 		}
-		else {
-			return SystemConstant.HYPHEN;
+
+		if (status != null){
+			return status ? SystemConstant.SUCCESS : SystemConstant.FAIL;
 		}
+		return SystemConstant.HYPHEN;
 	}
 
 	/**

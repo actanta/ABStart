@@ -28,6 +28,9 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
+	//org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'PUT' not supported
+	//org.springframework.web.HttpMediaTypeNotSupportedException: Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+	//缺少请求体org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public java.lang.String cc.abing.abstart.api.controller.ExampleController.ok(java.util.Map)
 	@ExceptionHandler
 	public Object handleException(Exception e) {
 		return logException("系统异常:" + e.getMessage(), e);
