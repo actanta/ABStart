@@ -4,17 +4,25 @@ import cc.abing.abstart.biz.service.ExampleService;
 import cc.abing.abstart.model.example.ExampleDO;
 import cc.abing.abstart.model.example.request.ExampleRequest;
 import cc.abing.abstart.support.system.constant.SystemConstant;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -40,13 +48,13 @@ public class ExampleController {
 	 */
 	@GetMapping(value = "/list")
 	public List<ExampleDO> listExampleDO(@RequestParam(value = "id", required = false) Long id,
-			@RequestParam(value = "start_create_time",
-					required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startCreateTime,
-			@RequestParam(value = "end_create_time",
-					required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endCreateTime,
-			@RequestParam(value = "page_index", required = false, defaultValue = "1") Integer pageIndex,
-			@Valid @Max(value = 50, message = "page_size超过最大值") @RequestParam(value = "page_size", required = false,
-					defaultValue = "20") Integer pageSize) {
+										 @RequestParam(value = "start_create_time",
+												 required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startCreateTime,
+										 @RequestParam(value = "end_create_time",
+												 required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endCreateTime,
+										 @RequestParam(value = "page_index", required = false, defaultValue = "1") Integer pageIndex,
+										 @Valid @Max(value = 50, message = "page_size超过最大值") @RequestParam(value = "page_size", required = false,
+												 defaultValue = "20") Integer pageSize) {
 		return exampleService.listExampleDO(id, startCreateTime, endCreateTime, pageIndex, pageSize);
 	}
 
@@ -73,6 +81,27 @@ public class ExampleController {
 	@DeleteMapping(value = "/")
 	public Integer deleteExampleDO(@Valid @RequestBody ExampleRequest request) {
 		return exampleService.deleteExampleDO(request);
+	}
+
+	@GetMapping(value = "/excel")
+	public ResponseEntity excel(@RequestParam(value = "id", required = false) Long id,
+								@RequestParam(value = "start_create_time",
+							 required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startCreateTime,
+								@RequestParam(value = "end_create_time",
+							 required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endCreateTime,
+								@RequestParam(value = "page_index", required = false, defaultValue = "1") Integer pageIndex,
+								@Valid @Max(value = 50, message = "page_size超过最大值") @RequestParam(value = "page_size", required = false,
+							 defaultValue = "20") Integer pageSize, HttpServletResponse httpServletResponse) throws IOException {
+		List<ExampleDO> exampleDOS = exampleService.listExampleDO(id, startCreateTime, endCreateTime, pageIndex, pageSize);
+		EasyExcel.write(new BufferedOutputStream(httpServletResponse.getOutputStream()), ExampleDO.class)
+				.registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).autoCloseStream(true)
+				.excelType(ExcelTypeEnum.XLS).needHead(true).sheet("Sheet1").doWrite(exampleDOS);
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping(value = "/ok")
+	public String ok(@RequestParam Map<String, String> map) {
+		return "ok";
 	}
 
 }

@@ -7,6 +7,7 @@ A Simple Spring Boot Project
 + 简单增删改查
 
 ## TODO
+0. SQL打印
 1. 返回非ResponseEntity，返回默认包装成ResponseEntity<Result<Object>>. 定义统一返回体结构
 2. 自定义配置写成配置类，方便查找@ConfigurationProperties(prefix = "xx.xx.xx")
 3. 所有二方接口，url都统一定义常量，接口统一写到一个类中
@@ -29,6 +30,19 @@ A Simple Spring Boot Project
 18. docker push,harbor:dockerfile-maven-plugin
 19. mvn deploy，releases|snapshots包deploy到私服不同位置:distributionManagement
 20. 线程池优雅关闭，自定义类优雅关闭（Java服务实现优雅的关闭：ShutdownHook/Signal回调https://www.jianshu.com/p/38101bff6c29）
+21. 操作日志(支持写入MySQL或ES)
+22. 前后端组件程序版本号展示
+23. jar单独生成到文件夹
+24. 支持tomcat和jar运行
+25. seata分布式事务
+26. RPC调用示例、心跳实现
+27. Netty demo
+28. xsd校验
+29. Antlrv4实例 
+30. 系统命令调用 
+31. 多种数据源连接方式支持  MySQL/MariaDB、Oracle、PostgreSQL、MongoDB、Redis、ES 
+32. Skywalking链路收集、普罗米修斯监控、系统资源监控(OS/version/osArch/CPU逻辑核数量/内存总大小/硬盘占用率/网卡IP/网卡速率/主机启动时间/进程信息/配置信息)
+33. SpringBoot重试注解@Retryable(value = {RemoteAccessException.class},maxAttempts = 3,backoff = @Backoff(delay = 5000)) @Recoverpublic void recover(RemoteAccessException e){dosomething;}
 
 ## CHECK
 1. 分页插件提示，确认是否有缓存问题：新的分页插件,一缓和二缓遵循mybatis的规则,需要设置 MybatisConfiguration#useDeprecatedExecutor = false 避免缓存出现问题(该属性会在旧插件移除后一同移除)
