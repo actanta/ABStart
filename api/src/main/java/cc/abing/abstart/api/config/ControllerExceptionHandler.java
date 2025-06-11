@@ -28,61 +28,61 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
-	//org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'PUT' not supported
-	//org.springframework.web.HttpMediaTypeNotSupportedException: Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
-	//缺少请求体org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public java.lang.String cc.abing.abstart.api.controller.ExampleController.ok(java.util.Map)
-	@ExceptionHandler
-	public Object handleException(Exception e) {
-		return logException("系统异常:" + e.getMessage(), e);
-	}
+    //org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'PUT' not supported
+    //org.springframework.web.HttpMediaTypeNotSupportedException: Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+    //缺少请求体org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public java.lang.String cc.abing.abstart.api.controller.ExampleController.ok(java.util.Map)
+    @ExceptionHandler(Throwable.class)
+    public Object handleException(Exception e) {
+        return logException("系统异常:" + e.getMessage(), e);
+    }
 
-	@ExceptionHandler({ BizException.class })
-	public Object handleBusinessException(BizException e) {
-		return logException("业务异常:" + e.getInfo(), e);
-	}
+    @ExceptionHandler({BizException.class})
+    public Object handleBusinessException(BizException e) {
+        return logException("业务异常:" + e.getInfo(), e);
+    }
 
-	@ExceptionHandler(MissingServletRequestParameterException.class)
-	public Object handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
-		return log("缺少参数:" + e.getMessage());
-	}
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public Object handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        return log("缺少参数:" + e.getMessage());
+    }
 
-	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	public Object handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-		return log("参数错误:" + e.getMessage());
-	}
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public Object handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        return log("参数错误:" + e.getMessage());
+    }
 
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public Object handleMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
-		BindingResult bindingResult = e.getBindingResult();
-		StringBuilder sb = new StringBuilder("请求地址:" + request.getRequestURI() + ", 参数校验异常:");
-		for (FieldError fieldError : bindingResult.getFieldErrors()) {
-			sb.append(fieldError.getField()).append("：").append(fieldError.getDefaultMessage()).append(", ");
-		}
-		return log(sb.toString());
-	}
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Object handleMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
+        BindingResult bindingResult = e.getBindingResult();
+        StringBuilder sb = new StringBuilder("请求地址:" + request.getRequestURI() + ", 参数校验异常:");
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            sb.append(fieldError.getField()).append("：").append(fieldError.getDefaultMessage()).append(", ");
+        }
+        return log(sb.toString());
+    }
 
-	@ExceptionHandler({ ConstraintViolationException.class })
-	public Result<?> handleConstraintViolationException(HttpServletRequest request, ConstraintViolationException e) {
-		Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
-		String validateMsg = String.valueOf(
-				constraintViolations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toList()));
-		log.warn("请求地址:{}, 参数校验异常:{}", request.getRequestURI(), validateMsg);
-		if (StringUtils.hasText(validateMsg)) {
-			return log(validateMsg);
-		}
-		return Result.failed();
-	}
+    @ExceptionHandler({ConstraintViolationException.class})
+    public Result<?> handleConstraintViolationException(HttpServletRequest request, ConstraintViolationException e) {
+        Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+        String validateMsg = String.valueOf(
+                constraintViolations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toList()));
+        log.warn("请求地址:{}, 参数校验异常:{}", request.getRequestURI(), validateMsg);
+        if (StringUtils.hasText(validateMsg)) {
+            return log(validateMsg);
+        }
+        return Result.failed();
+    }
 
-	private Result logException(String exceptionInfo, Exception e) {
-		log.warn(exceptionInfo, e);
-		// TODO 生产环境应直接返回Result.failed()
-		return Result.failed(exceptionInfo);
-	}
+    private Result logException(String exceptionInfo, Exception e) {
+        log.warn(exceptionInfo, e);
+        // TODO 生产环境应直接返回Result.failed()
+        return Result.failed(exceptionInfo);
+    }
 
-	private Result log(String exceptionInfo) {
-		log.info(exceptionInfo);
-		// TODO 生产环境应直接返回Result.failed()
-		return Result.failed(exceptionInfo);
-	}
+    private Result log(String exceptionInfo) {
+        log.info(exceptionInfo);
+        // TODO 生产环境应直接返回Result.failed()
+        return Result.failed(exceptionInfo);
+    }
 
 }
