@@ -7,7 +7,7 @@ A Simple Spring Boot Project
 + 简单增删改查
 
 ## TODO
-0. SQL打印、smart-doc
+0. SQL打印[√]、smart-doc
 1. 返回非ResponseEntity，返回默认包装成ResponseEntity<Result<Object>>. 定义统一返回体结构
 2. 自定义配置写成配置类，方便查找@ConfigurationProperties(prefix = "xx.xx.xx")
 3. 所有二方接口，url都统一定义常量，接口统一写到一个类中
@@ -18,7 +18,7 @@ A Simple Spring Boot Project
 6. JSR303参数校验
 7. MyBatis-Plus--自定义SQLhttps://blog.51cto.com/knifeedge/5139762
 8. Excel文件上传解析、导出;文件上传下载、连表查询
-9. 接口缓存
+9. 接口缓存 响应数据Gzip压缩、 接口【异步处理】
 10. 接口加密、数字签名。验签解签 
 11. 接口安全限流，防暴力破解
 12. Word、PDF生成(可选itextPDF)，电子签名到文件上
@@ -45,6 +45,7 @@ A Simple Spring Boot Project
 33. SpringBoot重试注解@Retryable(value = {RemoteAccessException.class},maxAttempts = 3,backoff = @Backoff(delay = 5000)) @Recoverpublic void recover(RemoteAccessException e){dosomething;}
 34. 文字国际化、不同地区时间展示问题
 35. 登录、注册、RBAC权限、按钮权限、菜单、数据字典
+36. 操作日志：如何优雅地记录操作日志？https://tech.meituan.com/2021/09/16/operational-logbook.html
 
 
 ## CHECK

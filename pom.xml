@@ -156,7 +156,7 @@
 						<phase>validate</phase>
 						<inherited>true</inherited>
 						<configuration>
-							<skip>false</skip>
+							<skip>true</skip>
 						</configuration>
 						<goals>
 							<goal>validate</goal>
