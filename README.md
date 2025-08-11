@@ -46,6 +46,8 @@ A Simple Spring Boot Project
 34. 文字国际化、不同地区时间展示问题
 35. 登录、注册、RBAC权限、按钮权限、菜单、数据字典
 36. 操作日志：如何优雅地记录操作日志？https://tech.meituan.com/2021/09/16/operational-logbook.html
+37. Spring定时任务， @EnableScheduling   @Scheduled(cron="0/5 * *  * * ? ")  public void execute(){}
+38. 多租户，增加TENANT_ID？
 
 
 ## CHECK

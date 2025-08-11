@@ -4,17 +4,18 @@ import cc.abing.abstart.model.asset.AssetDO;
 import cc.abing.abstart.model.asset.common.AssetRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.Date;
 import java.util.List;
 
 /**
  * <p>
- * 采购记录表 资产分类表(树状primary_category secondary_category1衣物 2数码 3食物 4学习) 服务类
+ * 资产记录表 服务类
  * </p>
  *
  * @author CodeGenerator
- * @since 2022-12-10
+ * @since 2025-08-11
  */
 public interface AssetService extends IService<AssetDO> {
 
@@ -22,12 +23,12 @@ public interface AssetService extends IService<AssetDO> {
 	 * 获取AssetDO列表
 	 * @return
 	 */
-	List<AssetDO> listAssetDO(Long id, String name, Long ownerId, Integer category, Integer specificCategory, String tag, Long amount, Long balance, Long purchasePrice, Date purchaseTime, Date purchaseTimeLeft, Date purchaseTimeRight, Date expirationTime, Date expirationTimeLeft, Date expirationTimeRight, Integer purchaseChannel, String purchaseChannelDetail, String imagePath, String remark, Integer pageIndex, Integer pageSize);
+	List<AssetDO> listAssetDO(Long id, String name, Long ownerId, Integer categoryId, Long amount, Long balance, Long purchasePrice, Date purchaseTime, Date purchaseTimeLeft, Date purchaseTimeRight, Date expirationTime, Date expirationTimeLeft, Date expirationTimeRight, Integer purchaseChannel, String purchaseChannelDetail, String imagePath, Integer status, String remark, Date createTime, Date createTimeLeft, Date createTimeRight, Date updateTime, Date updateTimeLeft, Date updateTimeRight, Integer pageIndex, Integer pageSize);
 
 	/**
 	 * 获取AssetDO分页
 	 */
-	Page<AssetDO> pageAssetDO(Long id, String name, Long ownerId, Integer category, Integer specificCategory, String tag, Long amount, Long balance, Long purchasePrice, Date purchaseTime, Date purchaseTimeLeft, Date purchaseTimeRight, Date expirationTime, Date expirationTimeLeft, Date expirationTimeRight, Integer purchaseChannel, String purchaseChannelDetail, String imagePath, String remark, Integer pageIndex, Integer pageSize);
+	Page<AssetDO> pageAssetDO(Long id, String name, Long ownerId, Integer categoryId, Long amount, Long balance, Long purchasePrice, Date purchaseTime, Date purchaseTimeLeft, Date purchaseTimeRight, Date expirationTime, Date expirationTimeLeft, Date expirationTimeRight, Integer purchaseChannel, String purchaseChannelDetail, String imagePath, Integer status, String remark, Date createTime, Date createTimeLeft, Date createTimeRight, Date updateTime, Date updateTimeLeft, Date updateTimeRight, Integer pageIndex, Integer pageSize);
 
 	/**
 	 * 获取AssetDO分页

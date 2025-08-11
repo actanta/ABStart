@@ -3,17 +3,18 @@ package cc.abing.abstart.model.asset;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Date;
 
 /**
  * <p>
- * 采购记录表 资产分类表(树状primary_category secondary_category1衣物 2数码 3食物 4学习)
+ * 资产记录表
  * </p>
  *
  * @author CodeGenerator
- * @since 2022-12-10
+ * @since 2025-08-11
  */
 @TableName("abstart.asset")
 public class AssetDO implements Serializable {
@@ -37,19 +38,9 @@ public class AssetDO implements Serializable {
     private Long ownerId;
 
     /**
-     * 资产分类
+     * 资产分类ID（关联asset_category表）
      */
-    private Integer category;
-
-    /**
-     * 资产具体分类
-     */
-    private Integer specificCategory;
-
-    /**
-     * 资产标签 必需品、双十一、生日
-     */
-    private String tag;
+    private Integer categoryId;
 
     /**
      * 资产数量
@@ -62,7 +53,7 @@ public class AssetDO implements Serializable {
     private Long balance;
 
     /**
-     * 采购价格
+     * 采购价格（单位：分）
      */
     private Long purchasePrice;
 
@@ -87,14 +78,31 @@ public class AssetDO implements Serializable {
     private String purchaseChannelDetail;
 
     /**
-     * 图片路径
+     * 图片路径（多图用JSON数组存储）
      */
     private String imagePath;
+
+    /**
+     * 资产状态：0删除 1正常 2维修中 3已丢失
+     */
+    private Integer status;
 
     /**
      * 备注
      */
     private String remark;
+
+    /**
+     * 创建时间
+     */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -117,26 +125,12 @@ public class AssetDO implements Serializable {
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
     }
-    public Integer getCategory() {
-        return category;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Integer category) {
-        this.category = category;
-    }
-    public Integer getSpecificCategory() {
-        return specificCategory;
-    }
-
-    public void setSpecificCategory(Integer specificCategory) {
-        this.specificCategory = specificCategory;
-    }
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
     public Long getAmount() {
         return amount;
@@ -194,12 +188,33 @@ public class AssetDO implements Serializable {
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
     public String getRemark() {
         return remark;
     }
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
@@ -208,9 +223,7 @@ public class AssetDO implements Serializable {
             "id=" + id +
             ", name=" + name +
             ", ownerId=" + ownerId +
-            ", category=" + category +
-            ", specificCategory=" + specificCategory +
-            ", tag=" + tag +
+            ", categoryId=" + categoryId +
             ", amount=" + amount +
             ", balance=" + balance +
             ", purchasePrice=" + purchasePrice +
@@ -219,7 +232,10 @@ public class AssetDO implements Serializable {
             ", purchaseChannel=" + purchaseChannel +
             ", purchaseChannelDetail=" + purchaseChannelDetail +
             ", imagePath=" + imagePath +
+            ", status=" + status +
             ", remark=" + remark +
+            ", createTime=" + createTime +
+            ", updateTime=" + updateTime +
         "}";
     }
 }

@@ -19,11 +19,11 @@ import java.util.List;
 
 /**
  * <p>
- * 采购记录表 资产分类表(树状primary_category secondary_category1衣物 2数码 3食物 4学习) 服务实现类
+ * 资产记录表 服务实现类
  * </p>
  *
  * @author CodeGenerator
- * @since 2022-12-10
+ * @since 2025-08-11
  */
 @Service
 public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetDO> implements AssetService {
@@ -36,14 +36,12 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetDO> implemen
 	}
 
 	@Override
-	public List<AssetDO> listAssetDO(Long id, String name, Long ownerId, Integer category, Integer specificCategory, String tag, Long amount, Long balance, Long purchasePrice, Date purchaseTime, Date purchaseTimeLeft, Date purchaseTimeRight, Date expirationTime, Date expirationTimeLeft, Date expirationTimeRight, Integer purchaseChannel, String purchaseChannelDetail, String imagePath, String remark, Integer pageIndex, Integer pageSize) {
+	public List<AssetDO> listAssetDO(Long id, String name, Long ownerId, Integer categoryId, Long amount, Long balance, Long purchasePrice, Date purchaseTime, Date purchaseTimeLeft, Date purchaseTimeRight, Date expirationTime, Date expirationTimeLeft, Date expirationTimeRight, Integer purchaseChannel, String purchaseChannelDetail, String imagePath, Integer status, String remark, Date createTime, Date createTimeLeft, Date createTimeRight, Date updateTime, Date updateTimeLeft, Date updateTimeRight, Integer pageIndex, Integer pageSize) {
 		LambdaQueryWrapper<AssetDO> wrapper = Wrappers.<AssetDO>lambdaQuery()
                 .eq(id != null, AssetDO::getId, id)
                 .eq(name != null, AssetDO::getName, name)
                 .eq(ownerId != null, AssetDO::getOwnerId, ownerId)
-                .eq(category != null, AssetDO::getCategory, category)
-                .eq(specificCategory != null, AssetDO::getSpecificCategory, specificCategory)
-                .eq(tag != null, AssetDO::getTag, tag)
+                .eq(categoryId != null, AssetDO::getCategoryId, categoryId)
                 .eq(amount != null, AssetDO::getAmount, amount)
                 .eq(balance != null, AssetDO::getBalance, balance)
                 .eq(purchasePrice != null, AssetDO::getPurchasePrice, purchasePrice)
@@ -54,21 +52,24 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetDO> implemen
                 .eq(purchaseChannel != null, AssetDO::getPurchaseChannel, purchaseChannel)
                 .eq(purchaseChannelDetail != null, AssetDO::getPurchaseChannelDetail, purchaseChannelDetail)
                 .eq(imagePath != null, AssetDO::getImagePath, imagePath)
+                .eq(status != null, AssetDO::getStatus, status)
                 .eq(remark != null, AssetDO::getRemark, remark)
+                .ge(createTimeLeft != null, AssetDO::getCreateTime, createTimeLeft)
+                .le(createTimeRight != null, AssetDO::getCreateTime, createTimeRight)
+                .ge(updateTimeLeft != null, AssetDO::getUpdateTime, updateTimeLeft)
+                .le(updateTimeRight != null, AssetDO::getUpdateTime, updateTimeRight)
                 .orderByDesc(AssetDO::getId);
                 
 		return assetMapper.selectList(wrapper);
 	}
 
 	@Override
-	public Page<AssetDO> pageAssetDO(Long id, String name, Long ownerId, Integer category, Integer specificCategory, String tag, Long amount, Long balance, Long purchasePrice, Date purchaseTime, Date purchaseTimeLeft, Date purchaseTimeRight, Date expirationTime, Date expirationTimeLeft, Date expirationTimeRight, Integer purchaseChannel, String purchaseChannelDetail, String imagePath, String remark, Integer pageIndex, Integer pageSize) {
+	public Page<AssetDO> pageAssetDO(Long id, String name, Long ownerId, Integer categoryId, Long amount, Long balance, Long purchasePrice, Date purchaseTime, Date purchaseTimeLeft, Date purchaseTimeRight, Date expirationTime, Date expirationTimeLeft, Date expirationTimeRight, Integer purchaseChannel, String purchaseChannelDetail, String imagePath, Integer status, String remark, Date createTime, Date createTimeLeft, Date createTimeRight, Date updateTime, Date updateTimeLeft, Date updateTimeRight, Integer pageIndex, Integer pageSize) {
             LambdaQueryWrapper<AssetDO> wrapper = Wrappers.<AssetDO>lambdaQuery()
                 .eq(id != null, AssetDO::getId, id)
                 .eq(name != null, AssetDO::getName, name)
                 .eq(ownerId != null, AssetDO::getOwnerId, ownerId)
-                .eq(category != null, AssetDO::getCategory, category)
-                .eq(specificCategory != null, AssetDO::getSpecificCategory, specificCategory)
-                .eq(tag != null, AssetDO::getTag, tag)
+                .eq(categoryId != null, AssetDO::getCategoryId, categoryId)
                 .eq(amount != null, AssetDO::getAmount, amount)
                 .eq(balance != null, AssetDO::getBalance, balance)
                 .eq(purchasePrice != null, AssetDO::getPurchasePrice, purchasePrice)
@@ -79,7 +80,12 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetDO> implemen
                 .eq(purchaseChannel != null, AssetDO::getPurchaseChannel, purchaseChannel)
                 .eq(purchaseChannelDetail != null, AssetDO::getPurchaseChannelDetail, purchaseChannelDetail)
                 .eq(imagePath != null, AssetDO::getImagePath, imagePath)
+                .eq(status != null, AssetDO::getStatus, status)
                 .eq(remark != null, AssetDO::getRemark, remark)
+                .ge(createTimeLeft != null, AssetDO::getCreateTime, createTimeLeft)
+                .le(createTimeRight != null, AssetDO::getCreateTime, createTimeRight)
+                .ge(updateTimeLeft != null, AssetDO::getUpdateTime, updateTimeLeft)
+                .le(updateTimeRight != null, AssetDO::getUpdateTime, updateTimeRight)
                 .orderByDesc(AssetDO::getId);
                 
         return assetMapper.selectPage(PageDTO.<AssetDO>of(pageIndex, pageSize), wrapper);
@@ -91,9 +97,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetDO> implemen
                 .eq(request.getId() != null, AssetDO::getId, request.getId())
                 .eq(request.getName() != null, AssetDO::getName, request.getName())
                 .eq(request.getOwnerId() != null, AssetDO::getOwnerId, request.getOwnerId())
-                .eq(request.getCategory() != null, AssetDO::getCategory, request.getCategory())
-                .eq(request.getSpecificCategory() != null, AssetDO::getSpecificCategory, request.getSpecificCategory())
-                .eq(request.getTag() != null, AssetDO::getTag, request.getTag())
+                .eq(request.getCategoryId() != null, AssetDO::getCategoryId, request.getCategoryId())
                 .eq(request.getAmount() != null, AssetDO::getAmount, request.getAmount())
                 .eq(request.getBalance() != null, AssetDO::getBalance, request.getBalance())
                 .eq(request.getPurchasePrice() != null, AssetDO::getPurchasePrice, request.getPurchasePrice())
@@ -104,7 +108,12 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetDO> implemen
                 .eq(request.getPurchaseChannel() != null, AssetDO::getPurchaseChannel, request.getPurchaseChannel())
                 .eq(request.getPurchaseChannelDetail() != null, AssetDO::getPurchaseChannelDetail, request.getPurchaseChannelDetail())
                 .eq(request.getImagePath() != null, AssetDO::getImagePath, request.getImagePath())
+                .eq(request.getStatus() != null, AssetDO::getStatus, request.getStatus())
                 .eq(request.getRemark() != null, AssetDO::getRemark, request.getRemark())
+                .ge(request.getCreateTimeLeft() != null, AssetDO::getCreateTime, request.getCreateTimeLeft())
+                .le(request.getCreateTimeRight() != null, AssetDO::getCreateTime, request.getCreateTimeRight())
+                .ge(request.getUpdateTimeLeft() != null, AssetDO::getUpdateTime, request.getUpdateTimeLeft())
+                .le(request.getUpdateTimeRight() != null, AssetDO::getUpdateTime, request.getUpdateTimeRight())
                 .orderByDesc(AssetDO::getId);
                 
 		return assetMapper.selectPage(PageDTO.<AssetDO>of(request.getPageIndex(), request.getPageSize()),wrapper);
@@ -134,9 +143,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetDO> implemen
 				    .set(AssetDO::getId,assetDO.getId())
 				    .set(AssetDO::getName,assetDO.getName())
 				    .set(AssetDO::getOwnerId,assetDO.getOwnerId())
-				    .set(AssetDO::getCategory,assetDO.getCategory())
-				    .set(AssetDO::getSpecificCategory,assetDO.getSpecificCategory())
-				    .set(AssetDO::getTag,assetDO.getTag())
+				    .set(AssetDO::getCategoryId,assetDO.getCategoryId())
 				    .set(AssetDO::getAmount,assetDO.getAmount())
 				    .set(AssetDO::getBalance,assetDO.getBalance())
 				    .set(AssetDO::getPurchasePrice,assetDO.getPurchasePrice())
@@ -145,7 +152,10 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetDO> implemen
 				    .set(AssetDO::getPurchaseChannel,assetDO.getPurchaseChannel())
 				    .set(AssetDO::getPurchaseChannelDetail,assetDO.getPurchaseChannelDetail())
 				    .set(AssetDO::getImagePath,assetDO.getImagePath())
+				    .set(AssetDO::getStatus,assetDO.getStatus())
 				    .set(AssetDO::getRemark,assetDO.getRemark())
+				    .set(AssetDO::getCreateTime,assetDO.getCreateTime())
+				    .set(AssetDO::getUpdateTime,assetDO.getUpdateTime())
 				.last("limit 1"));
 	}
 

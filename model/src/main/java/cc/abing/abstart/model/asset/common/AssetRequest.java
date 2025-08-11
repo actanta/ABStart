@@ -5,11 +5,11 @@ import javax.validation.constraints.Max;
 import java.util.Date;
 /**
  * <p>
- * 采购记录表 资产分类表(树状primary_category secondary_category1衣物 2数码 3食物 4学习) Request模型
+ * 资产记录表 Request模型
  * </p>
  *
  * @author CodeGenerator
- * @since 2022-12-10
+ * @since 2025-08-11
  */
 public class AssetRequest extends AssetDO {
 
@@ -31,19 +31,9 @@ public class AssetRequest extends AssetDO {
     private Long ownerId;
 
     /**
-     * 资产分类
+     * 资产分类ID（关联asset_category表）
      */
-    private Integer category;
-
-    /**
-     * 资产具体分类
-     */
-    private Integer specificCategory;
-
-    /**
-     * 资产标签 必需品、双十一、生日
-     */
-    private String tag;
+    private Integer categoryId;
 
     /**
      * 资产数量
@@ -56,7 +46,7 @@ public class AssetRequest extends AssetDO {
     private Long balance;
 
     /**
-     * 采购价格
+     * 采购价格（单位：分）
      */
     private Long purchasePrice;
 
@@ -101,14 +91,49 @@ public class AssetRequest extends AssetDO {
     private String purchaseChannelDetail;
 
     /**
-     * 图片路径
+     * 图片路径（多图用JSON数组存储）
      */
     private String imagePath;
+
+    /**
+     * 资产状态：0删除 1正常 2维修中 3已丢失
+     */
+    private Integer status;
 
     /**
      * 备注
      */
     private String remark;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 创建时间左边界
+     */
+    private Date createTimeLeft;
+
+    /**
+     * 创建时间右边界
+     */
+    private Date createTimeRight;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
+    /**
+     * 更新时间左边界
+     */
+    private Date updateTimeLeft;
+
+    /**
+     * 更新时间右边界
+     */
+    private Date updateTimeRight;
 
 
 	/**
@@ -151,30 +176,12 @@ public class AssetRequest extends AssetDO {
     }
 
 
-    public Integer getCategory() {
-        return category;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Integer category) {
-        this.category = category;
-    }
-
-
-    public Integer getSpecificCategory() {
-        return specificCategory;
-    }
-
-    public void setSpecificCategory(Integer specificCategory) {
-        this.specificCategory = specificCategory;
-    }
-
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
 
@@ -282,12 +289,71 @@ public class AssetRequest extends AssetDO {
     }
 
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+
     public String getRemark() {
         return remark;
     }
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getCreateTimeLeft() {
+        return createTimeLeft;
+    }
+
+    public void setCreateTimeLeft(Date createTimeLeft) {
+        this.createTimeLeft = createTimeLeft;
+    }
+
+    public Date getCreateTimeRight() {
+        return createTimeRight;
+    }
+
+    public void setCreateTimeRight(Date createTimeRight) {
+        this.createTimeRight = createTimeRight;
+    }
+
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Date getUpdateTimeLeft() {
+        return updateTimeLeft;
+    }
+
+    public void setUpdateTimeLeft(Date updateTimeLeft) {
+        this.updateTimeLeft = updateTimeLeft;
+    }
+
+    public Date getUpdateTimeRight() {
+        return updateTimeRight;
+    }
+
+    public void setUpdateTimeRight(Date updateTimeRight) {
+        this.updateTimeRight = updateTimeRight;
     }
 
 
@@ -299,9 +365,7 @@ public class AssetRequest extends AssetDO {
             "id=" + id +
             ", name=" + name +
             ", ownerId=" + ownerId +
-            ", category=" + category +
-            ", specificCategory=" + specificCategory +
-            ", tag=" + tag +
+            ", categoryId=" + categoryId +
             ", amount=" + amount +
             ", balance=" + balance +
             ", purchasePrice=" + purchasePrice +
@@ -310,7 +374,10 @@ public class AssetRequest extends AssetDO {
             ", purchaseChannel=" + purchaseChannel +
             ", purchaseChannelDetail=" + purchaseChannelDetail +
             ", imagePath=" + imagePath +
+            ", status=" + status +
             ", remark=" + remark +
+            ", createTime=" + createTime +
+            ", updateTime=" + updateTime +
         "}";
     }
 

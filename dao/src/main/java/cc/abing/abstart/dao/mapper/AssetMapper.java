@@ -6,11 +6,11 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- * 采购记录表 资产分类表(树状primary_category secondary_category1衣物 2数码 3食物 4学习) Mapper 接口
+ * 资产记录表 Mapper 接口
  * </p>
  *
  * @author CodeGenerator
- * @since 2022-12-10
+ * @since 2025-08-11
  */
 @Mapper
 public interface AssetMapper extends BaseMapper<AssetDO> {

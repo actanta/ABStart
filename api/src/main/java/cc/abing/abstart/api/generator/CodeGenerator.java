@@ -30,7 +30,7 @@ public class CodeGenerator {
 
 	public static final String MODULE_NAME = "abstart";
 
-	public static final String TABLE_PREFIX = "abstart_";
+	public static final String TABLE_PREFIX = "";
 
 	public static final String PACKAGE_PATH = (PACKAGE_NAME.concat(".").concat(MODULE_NAME)).replaceAll("\\.", "/");
 
