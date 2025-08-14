@@ -53,8 +53,7 @@ public class ControllerExceptionHandler {
             HttpMessageNotReadableException.class,
             MismatchedInputException.class,
             MissingServletRequestParameterException.class,
-            MethodArgumentTypeMismatchException.class,
-            MethodArgumentNotValidException.class})
+            MethodArgumentTypeMismatchException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Object handleClientException(HttpMessageNotReadableException e) {
         return log("请求传参异常:" + e.getMessage());
