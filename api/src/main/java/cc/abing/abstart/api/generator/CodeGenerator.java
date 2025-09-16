@@ -124,7 +124,7 @@ public class CodeGenerator {
 							// mapper
 							.mapperBuilder().enableMapperAnnotation()
 							// entity
-							.entityBuilder().idType(IdType.AUTO).formatFileName("%sDO");
+							.entityBuilder().idType(IdType.AUTO)/*.enableLombok()*/.formatFileName("%sDO");
 				})
 
 				// 注入自定义变量

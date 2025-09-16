@@ -1,3 +1,63 @@
+--创建用户及数据库并授权
+CREATE USER IF NOT EXISTS 'abstart'@'%' IDENTIFIED BY 'xxxxxxxxx';
+CREATE DATABASE IF NOT EXISTS abstart DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER ON abstart.* TO 'abstart'@'%';
+FLUSH PRIVILEGES;
+
+--业务用户表
+CREATE TABLE biz_user (
+  id INT PRIMARY KEY AUTO_INCREMENT COMMENT '用户ID',
+  username VARCHAR(50) NOT NULL COMMENT '用户名',
+  password VARCHAR(255) NOT NULL COMMENT '密码',
+  slat VARCHAR(255) NOT NULL COMMENT '盐值',
+  session_id VARCHAR(255) NOT NULL COMMENT '会话ID',
+  nickname VARCHAR(50) DEFAULT NULL COMMENT '昵称',
+  avatar VARCHAR(255) DEFAULT NULL COMMENT '头像',
+  mobile VARCHAR(20) UNIQUE NOT NULL COMMENT '手机号',
+  email VARCHAR(100) UNIQUE NOT NULL COMMENT '邮箱',
+  status TINYINT DEFAULT 1 COMMENT '状态（0:禁用 1:启用）',
+  last_login_time DATETIME DEFAULT NULL COMMENT '最后登录时间',
+  last_login_ip VARCHAR(20) DEFAULT NULL COMMENT '最后登录IP',
+  created_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  updated_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  is_deleted TINYINT DEFAULT 0 COMMENT '逻辑删除标记'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE biz_meters (
+  id INT PRIMARY KEY AUTO_INCREMENT COMMENT '电表ID',
+  user_id INT NOT NULL COMMENT '关联用户ID',
+  meter_number VARCHAR(20) UNIQUE NOT NULL COMMENT '电表编号',
+  installation_address TEXT NOT NULL COMMENT '安装地址',
+  created_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  updated_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  is_deleted TINYINT DEFAULT 0 COMMENT '逻辑删除标记'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE biz_electricity_bills (
+  id INT PRIMARY KEY AUTO_INCREMENT COMMENT '记录ID',
+  meter_id INT NOT NULL COMMENT '关联电表ID',
+  reading_date DATETIME NOT NULL COMMENT '抄表时间',
+  previous_reading DECIMAL(10,2) NOT NULL COMMENT '上次读数',
+  current_reading DECIMAL(10,2) NOT NULL COMMENT '本次读数',
+  consumption DECIMAL(10,2) GENERATED ALWAYS AS (current_reading - previous_reading) COMMENT '用电量',
+  amount DECIMAL(10,2) NOT NULL COMMENT '电费金额',
+  status ENUM('unpaid', 'paid', 'partial') NOT NULL DEFAULT 'unpaid' COMMENT '缴费状态',
+  payment_date DATETIME COMMENT '缴费时间',
+  created_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  updated_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  is_deleted TINYINT DEFAULT 0 COMMENT '逻辑删除标记'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE biz_electricity_rates (
+  id INT PRIMARY KEY AUTO_INCREMENT COMMENT '费率ID',
+  time_period VARCHAR(20) NOT NULL COMMENT '时间段（如峰/平/谷）',
+  rate DECIMAL(5,3) NOT NULL COMMENT '费率（元/度）',
+  effective_date DATE NOT NULL COMMENT '生效日期',
+  created_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  updated_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  is_deleted TINYINT DEFAULT 0 COMMENT '逻辑删除标记'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
  --通用分类表
  -- 如果各模块分类较少，可用此统一分类表替代模块专属分类表
  CREATE TABLE `system_category` (
