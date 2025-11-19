@@ -163,7 +163,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
                     <#else>
                         <#assign getprefix="get"/>
                     </#if>
-				    .set(${entity}::${getprefix}${field.capitalName},${entity?uncap_first}.${getprefix}${field.capitalName}())
+				    .set(${entity?uncap_first}.${getprefix}${field.capitalName}()!=null, ${entity}::${getprefix}${field.capitalName}, ${entity?uncap_first}.${getprefix}${field.capitalName}())
 				</#list>
 				.last("limit 1"));
 	}
