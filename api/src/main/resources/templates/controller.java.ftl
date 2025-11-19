@@ -61,10 +61,10 @@ public class ${table.controllerName} {
 	@GetMapping(value = "/list")
     	public List<${entity}> list${entity}(
     	<#list table.fields as field>
-                @RequestParam(value = "${camelToDashed(field.propertyName)}", required = false) ${field.propertyType} ${field.propertyName},
+                @RequestParam(value = "${camelToDashed(field.propertyName)}，${field.propertyName}", required = false) ${field.propertyType} ${field.propertyName},
     	    <#if field.propertyType == "Date">
-                @RequestParam(value = "${camelToDashed(field.propertyName)}_left", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") ${field.propertyType} ${field.propertyName}Left,
-                @RequestParam(value = "${camelToDashed(field.propertyName)}_right", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") ${field.propertyType} ${field.propertyName}Right,
+                @RequestParam(value = "${camelToDashed(field.propertyName)}_left，${field.propertyName}_left", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") ${field.propertyType} ${field.propertyName}Left,
+                @RequestParam(value = "${camelToDashed(field.propertyName)}_right，${field.propertyName}_right", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") ${field.propertyType} ${field.propertyName}Right,
             </#if>
     	</#list>
     			@RequestParam(value = "page_index", required = false, defaultValue = "1") Integer pageIndex,
@@ -83,8 +83,8 @@ public class ${table.controllerName} {
     	}
     
     	@PatchMapping(value = "/")
-    	public Integer modify${entity}(@Valid @RequestBody ${entity?replace("DO", "Request")} request) {
-    		return ${table.serviceName?uncap_first}.modify${entity}(request);
+    	public Integer patch${entity}(@Valid @RequestBody ${entity?replace("DO", "Request")} request) {
+    		return ${table.serviceName?uncap_first}.patch${entity}(request);
     	}
     
     	@PutMapping(value = "/")

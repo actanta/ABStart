@@ -46,7 +46,7 @@ public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
 	/**
 	 * 修改${entity}
 	 */
-	Integer modify${entity}(${entity?replace("DO", "Request")} request);
+	Integer patch${entity}(${entity?replace("DO", "Request")} request);
 
 	/**
 	 * 更新${entity}

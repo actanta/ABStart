@@ -145,7 +145,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Integer modify${entity}(${entity?replace("DO", "Request")} request) {
+	public Integer patch${entity}(${entity?replace("DO", "Request")} request) {
 		${entity} ${entity?uncap_first} = ${entity?replace("DO", "Converter")}.M.convert(request);
 		return ${table.mapperName?uncap_first?uncap_first}.update(${entity?uncap_first},
 				Wrappers.<${entity}>lambdaUpdate().eq(${entity}::getId, ${entity?uncap_first}.getId()).last("limit 1"));
