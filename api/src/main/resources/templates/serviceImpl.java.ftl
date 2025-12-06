@@ -147,7 +147,16 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
 	@Transactional(rollbackFor = Exception.class)
 	public Integer patch${entity}(${entity?replace("DO", "Request")} request) {
 		${entity} ${entity?uncap_first} = ${entity?replace("DO", "Converter")}.M.convert(request);
-		return ${table.mapperName?uncap_first?uncap_first}.update(${entity?uncap_first},
+        ${entity} update${entity?uncap_first} = new ${entity}();
+        <#list table.fields as field>
+            <#if field.propertyType == "boolean">
+                <#assign getprefix="is"/>
+            <#else>
+                <#assign getprefix="get"/>
+            </#if>
+            update${entity?uncap_first}.set${field.capitalName}(${entity?uncap_first}.${getprefix}${field.capitalName}());
+        </#list>
+		return ${table.mapperName?uncap_first?uncap_first}.update(update${entity?uncap_first},
 				Wrappers.<${entity}>lambdaUpdate().eq(${entity}::getId, ${entity?uncap_first}.getId()).last("limit 1"));
 	}
 
