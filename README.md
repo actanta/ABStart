@@ -1,6 +1,22 @@
 # ABStart
 A Simple Spring Boot Project
 
+root‑parent
+├─ api 对外接口层
+├─ 各个业务service
+├─ suite‑security
+├─ suite‑rpc
+├─ suite‑monitor
+├─ suite‑data
+├─ suite‑third
+├─ suite‑test
+├─ suite‑starter‑* 系列按需starter
+├─ gateway‑common
+
+├─ suite‑kernel         // 基础BOM、基础自动装配
+├─ suite‑model          // 纯公共POJO/枚举，无逻辑
+├─ util‑core
+
 ## Road-Map
 + 初始化Spring Boot工程
 + 模块分层

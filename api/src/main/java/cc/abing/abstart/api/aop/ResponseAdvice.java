@@ -1,5 +1,6 @@
 package cc.abing.abstart.api.aop;
 
+import cc.abing.abstart.MainApplication;
 import cc.abing.abstart.support.system.constant.SystemConstant;
 import cc.abing.abstart.support.system.result.Result;
 import org.springframework.core.MethodParameter;
@@ -14,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @author ABing
  * @since 2022/10/17
  */
-@RestControllerAdvice(basePackages = SystemConstant.PACKAGE_PREFIX + "api")
+@RestControllerAdvice(basePackageClasses = MainApplication.class)
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
 	@Override

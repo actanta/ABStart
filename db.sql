@@ -1,10 +1,10 @@
---创建用户及数据库并授权
+-- 创建用户及数据库并授权
 CREATE USER IF NOT EXISTS 'abstart'@'%' IDENTIFIED BY 'xxxxxxxxx';
 CREATE DATABASE IF NOT EXISTS abstart DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER ON abstart.* TO 'abstart'@'%';
 FLUSH PRIVILEGES;
 
---业务用户表
+-- 业务用户表
 CREATE TABLE biz_user (
   id INT PRIMARY KEY AUTO_INCREMENT COMMENT '用户ID',
   username VARCHAR(50) NOT NULL COMMENT '用户名',
@@ -58,7 +58,7 @@ CREATE TABLE biz_electricity_rates (
   is_deleted TINYINT DEFAULT 0 COMMENT '逻辑删除标记'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
- --通用分类表
+ -- 通用分类表
  -- 如果各模块分类较少，可用此统一分类表替代模块专属分类表
  CREATE TABLE `system_category` (
    `id` int NOT NULL AUTO_INCREMENT,
@@ -72,7 +72,7 @@ CREATE TABLE biz_electricity_rates (
    KEY `idx_module` (`module`)
  ) ENGINE=InnoDB COMMENT='系统通用分类表';
 
- --系统配置表
+ -- 系统配置表
  CREATE TABLE `system_config` (
    `id` int NOT NULL AUTO_INCREMENT,
    `config_key` varchar(50) NOT NULL COMMENT '配置键',
@@ -83,7 +83,7 @@ CREATE TABLE biz_electricity_rates (
    UNIQUE KEY `uk_key` (`config_key`)
  ) ENGINE=InnoDB COMMENT='系统配置表';
 
---资产表
+-- 资产表
 CREATE TABLE `asset` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '资产编号',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '资产名称',
@@ -108,7 +108,7 @@ CREATE TABLE `asset` (
   KEY `idx_status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='资产记录表';
 
---资产分类表
+-- 资产分类表
 CREATE TABLE `abstart`.`asset_category` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '分类ID',
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '分类名称',
@@ -134,7 +134,7 @@ INSERT INTO `abstart`.`asset_category` (`id`, `name`, `parent_id`, `level`, `sor
 (7, '手机', 2, 2, 1),
 (8, '电脑', 2, 2, 2);
 
---资产标签表
+-- 资产标签表
 CREATE TABLE `abstart`.`asset_tag` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '标签ID',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '标签名称',

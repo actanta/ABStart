@@ -30,32 +30,39 @@ public class Result<T> implements ICodeMsg {
 	 */
 	private T data;
 
+	public static <T> Result<T> success() {
+		return new Result<>(CodeMsg.SYSTEM_OK, null);
+	}
+
 	public static <T> Result<T> success(T data) {
-		return new Result<>(CodeMsg.SYSTEM_OK.getCode(), CodeMsg.SYSTEM_OK.getMsg(), data);
+		return new Result<>(CodeMsg.SYSTEM_OK, data);
 	}
 
 	public static <T> Result<T> success(String message, T data) {
 		return new Result<>(CodeMsg.SYSTEM_OK.getCode(), message, data);
 	}
 
-	public static Result<?> failed() {
-		return new Result<>(CodeMsg.BAD_REQUEST.getCode(), CodeMsg.BAD_REQUEST.getMsg(), null);
+	public static <T> Result<T> failed() {
+		return new Result<>(CodeMsg.BAD_REQUEST, null);
 	}
 
-	public static Result<?> failed(String message) {
+	public static <T> Result<T> failed(String message) {
 		return new Result<>(CodeMsg.BAD_REQUEST.getCode(), message, null);
 	}
 
-	public static Result<?> failed(ICodeMsg codeMsg) {
+	public static <T> Result<T> failed(ICodeMsg codeMsg) {
 		return new Result<>(codeMsg.getCode(), codeMsg.getMsg(), null);
 	}
 
-	public static <T> Result<T> instance(String code, String message, T data) {
-		Result<T> result = new Result<>();
-		result.setCode(code);
-		result.setMsg(message);
+	public static <T> Result<T> failed(ICodeMsg codeMsg, T data) {
+		return new Result<>(codeMsg.getCode(), codeMsg.getMsg(), data);
+	}
+
+	public Result(CodeMsg codeMsg, T data) {
+		Result result = new Result<>();
+		result.setCode(codeMsg.getCode());
+		result.setMsg(codeMsg.getMsg());
 		result.setData(data);
-		return result;
 	}
 
 }

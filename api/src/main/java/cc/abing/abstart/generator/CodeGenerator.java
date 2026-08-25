@@ -1,4 +1,4 @@
-package cc.abing.abstart.api.generator;
+package cc.abing.abstart.generator;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
@@ -24,7 +24,7 @@ public class CodeGenerator {
 
 	public static final String DB_NAME = "abstart";
 
-	public static String TABLE_NAME = "asset";
+	public static String TABLE_NAME = "biz_user";
 
 	public static final String PACKAGE_NAME = "cc.abing";
 
@@ -88,10 +88,10 @@ public class CodeGenerator {
 
 			{
 				put(OutputFile.controller, USER_DIR + "/api/src/main/java/" + PACKAGE_PATH + "/api/controller");
-				put(OutputFile.service, USER_DIR + "/biz/src/main/java/" + PACKAGE_PATH + "/biz/service");
-				put(OutputFile.serviceImpl, USER_DIR + "/biz/src/main/java/" + PACKAGE_PATH + "/biz/service/impl");
+				put(OutputFile.service, USER_DIR + "/api/src/main/java/" + PACKAGE_PATH + "/biz/service");
+				put(OutputFile.serviceImpl, USER_DIR + "/api/src/main/java/" + PACKAGE_PATH + "/biz/service/impl");
+				put(OutputFile.xml, USER_DIR + "/api/src/main/resources/mapper");
 				put(OutputFile.entity, USER_DIR + "/model/src/main/java/" + PACKAGE_PATH + "/model/" + TABLE_NAME);
-				put(OutputFile.xml, USER_DIR + "/dao/src/main/resources/mapper");
 				// other:
 				// /USER_DIR/model/src/main/java/PACKAGE_PATH/model/TABLE_NAME/common/${entity}/${injectionConfig.customFileMap.key}
 				put(OutputFile.other,

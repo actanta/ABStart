@@ -3,19 +3,9 @@ package cc.abing.abstart.support.system.constant;
 public final class SystemConstant {
 
 	/**
-	 * 包名前缀
-	 */
-	public static final String PACKAGE_PREFIX = "cc.abing.abstart.";
-
-	/**
-	 * API版本常量
-	 */
-	public static final String API_VERSION = "v1";
-
-	/**
 	 * 基础路径
 	 */
-	public static final String BASE_PATH = "/api/" + API_VERSION;
+	public static final String BASE_PATH = "/api/v1";
 
 	/**
 	 * 默认分页大小
