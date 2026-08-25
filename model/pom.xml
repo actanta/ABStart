@@ -21,7 +21,7 @@
         <!--子模块-START-->
         <dependency>
             <groupId>cc.abing</groupId>
-            <artifactId>abstart-support</artifactId>
+            <artifactId>abstart-suite</artifactId>
         </dependency>
         <!--子模块-END-->
     </dependencies>

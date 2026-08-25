@@ -6,6 +6,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * @author ABing
+ * @since 2026-08-25
  */
 @SpringBootApplication
 public class MainApplication {

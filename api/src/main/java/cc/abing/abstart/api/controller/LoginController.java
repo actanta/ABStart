@@ -1,6 +1,6 @@
 package cc.abing.abstart.api.controller;
 
-import cc.abing.abstart.support.system.constant.SystemConstant;
+import cc.abing.abstart.suite.system.constant.SystemConstant;
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author ABing
- * @since 2022/11/22
+ * @since 2026-08-25
  */
 @Slf4j
 @RestController

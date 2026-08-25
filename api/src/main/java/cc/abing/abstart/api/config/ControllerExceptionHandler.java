@@ -1,7 +1,7 @@
 package cc.abing.abstart.api.config;
 
-import cc.abing.abstart.support.system.exception.BizException;
-import cc.abing.abstart.support.system.result.Result;
+import cc.abing.abstart.suite.system.exception.BizException;
+import cc.abing.abstart.suite.system.result.Result;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author ABing
- * @since 2022/8/6
+ * @since 2026-08-25
  */
 @Slf4j
 @Order(1)
@@ -39,13 +39,13 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Object handleException(Exception e) {
-        return logException("系统异常:" + e.getMessage(), e);
+        return logException("系统异常:" + e.getClass().getSimpleName(), e);
     }
 
     @ExceptionHandler({BizException.class})
     @ResponseStatus(HttpStatus.OK)
     public Object handleBusinessException(BizException e) {
-        return logException("业务异常:" + e.getInfo(), e);
+        return logException("业务异常:" + e.getCode() + ":" + e.getInfo(), e);
     }
 
     @ExceptionHandler({
@@ -63,10 +63,11 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Object handleMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
-        StringBuilder sb = new StringBuilder("请求地址:" + request.getRequestURI() + ", 参数校验异常:");
+        StringBuilder sb = new StringBuilder("参数校验异常:");
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             sb.append(fieldError.getField()).append("：").append(fieldError.getDefaultMessage()).append(", ");
         }
+        log.warn("请求地址:{}, 参数校验异常:{}", request.getRequestURI(), sb);
         return log(sb.toString());
     }
 
@@ -85,13 +86,11 @@ public class ControllerExceptionHandler {
 
     private Result logException(String exceptionInfo, Exception e) {
         log.warn(exceptionInfo, e);
-        // TODO 生产环境应直接返回Result.failed()
         return Result.failed(exceptionInfo);
     }
 
     private Result log(String exceptionInfo) {
         log.info(exceptionInfo);
-        // TODO 生产环境应直接返回Result.failed()
         return Result.failed(exceptionInfo);
     }
 

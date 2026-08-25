@@ -18,7 +18,7 @@ import java.util.Properties;
 
 /**
  * @author ABing
- * @since 2022/11/26
+ * @since 2026-08-25
  */
 public class CodeGenerator {
 
@@ -42,6 +42,8 @@ public class CodeGenerator {
 
 	public static String DB_PASSWORD;
 
+	public static String AUTHOR = "ABing";
+
 	public static void main(String[] args) {
 		System.out.println("FastAutoGenerator开始执行");
 		Properties properties = new Properties();
@@ -51,9 +53,7 @@ public class CodeGenerator {
 		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		// DB_URL = "jdbc:mysql://localhost:3306/" + DB_NAME
-		// +
-		// "?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC%2B0&zeroDateTimeBehavior=convertToNull";
+
 		DB_URL = properties.getProperty("spring.datasource.dynamic.datasource.mysql.url");
 		DB_USERNAME = properties.getProperty("spring.datasource.dynamic.datasource.mysql.username");
 		DB_PASSWORD = properties.getProperty("spring.datasource.dynamic.datasource.mysql.password");
@@ -99,13 +99,13 @@ public class CodeGenerator {
 			}
 		};
 		// 打印输出路径
-		String outputDir = USER_DIR + "/dao/src/main/java";
+		String outputDir = USER_DIR + "/api/src/main/java";
 		System.out.println("基础输出路径：" + outputDir);
 		System.out.println("自定义输出路径：");
 		pathInfoMap.forEach((key, value) -> System.out.println(key.name() + ":" + value));
 
 		FastAutoGenerator.create(dataSourceConfigBuilder).globalConfig(builder -> {
-			builder.author("CodeGenerator").outputDir(outputDir).disableOpenDir().dateType(DateType.ONLY_DATE);
+			builder.author(AUTHOR).outputDir(outputDir).disableOpenDir().dateType(DateType.ONLY_DATE);
 		})
 				// 包名配置
 				.packageConfig(builder -> {
@@ -140,6 +140,7 @@ public class CodeGenerator {
 					}).customMap(new HashMap<String, Object>() {
 						{
 							put("MyComment", "自定义变量值");
+							put("commonPackage", PACKAGE_NAME + "." + MODULE_NAME);
 						}
 					}).beforeOutputFile((tableInfo, map) -> {
 						System.out.println("【CodeGenerator变量map】");

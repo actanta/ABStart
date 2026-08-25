@@ -25,11 +25,8 @@
 
 	<modules>
 		<module>api</module>
-		<module>biz</module>
-		<module>dao</module>
 		<module>model</module>
-		<module>util</module>
-		<module>support</module>
+		<module>suite</module>
 	</modules>
 
 	<dependencyManagement>
@@ -42,27 +39,12 @@
 			</dependency>
 			<dependency>
 				<groupId>cc.abing</groupId>
-				<artifactId>abstart-biz</artifactId>
-				<version>${revision}</version>
-			</dependency>
-			<dependency>
-				<groupId>cc.abing</groupId>
-				<artifactId>abstart-dao</artifactId>
-				<version>${revision}</version>
-			</dependency>
-			<dependency>
-				<groupId>cc.abing</groupId>
 				<artifactId>abstart-model</artifactId>
 				<version>${revision}</version>
 			</dependency>
 			<dependency>
 				<groupId>cc.abing</groupId>
-				<artifactId>abstart-support</artifactId>
-				<version>${revision}</version>
-			</dependency>
-			<dependency>
-				<groupId>cc.abing</groupId>
-				<artifactId>abstart-util</artifactId>
+				<artifactId>abstart-suite</artifactId>
 				<version>${revision}</version>
 			</dependency>
 			<!--子模块-END-->

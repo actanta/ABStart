@@ -3,13 +3,15 @@ package ${package.Controller};
 <#if superControllerClassPackage??>
 import ${superControllerClassPackage};
 </#if>
+import ${commonPackage}.support.system.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
-import cc.abing.abstart.support.system.constant.SystemConstant;
+import constant.cc.abing.abstart.suite.system.SystemConstant;
 import ${package.Entity}.common.${entity?replace("DO", "Request")};
 
 import javax.validation.Valid;
@@ -58,13 +60,13 @@ public class ${table.controllerName} {
 		this.${table.serviceName?uncap_first} = ${table.serviceName?uncap_first};
 	}
 	
-	@GetMapping(value = "/list")
+	@GetMapping(value = "/")
     	public List<${entity}> list${entity}(
     	<#list table.fields as field>
-                @RequestParam(value = "${camelToDashed(field.propertyName)}，${field.propertyName}", required = false) ${field.propertyType} ${field.propertyName},
+                @RequestParam(value = "${field.propertyName}", required = false) ${field.propertyType} ${field.propertyName},
     	    <#if field.propertyType == "Date">
-                @RequestParam(value = "${camelToDashed(field.propertyName)}_left，${field.propertyName}_left", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") ${field.propertyType} ${field.propertyName}Left,
-                @RequestParam(value = "${camelToDashed(field.propertyName)}_right，${field.propertyName}_right", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") ${field.propertyType} ${field.propertyName}Right,
+                @RequestParam(value = "${field.propertyName}Left", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") ${field.propertyType} ${field.propertyName}Left,
+                @RequestParam(value = "${field.propertyName}Right", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") ${field.propertyType} ${field.propertyName}Right,
             </#if>
     	</#list>
     			@RequestParam(value = "page_index", required = false, defaultValue = "1") Integer pageIndex,
@@ -73,27 +75,27 @@ public class ${table.controllerName} {
     	}
     
     	@GetMapping(value = "/page")
-    	public Page<${entity}> page${entity}(@Valid ${entity?replace("DO", "Request")} request) {
+    	public Page<${entity}> page${entity}(@Validated(Query.class) ${entity?replace("DO", "Request")} request) {
     		return ${table.serviceName?uncap_first}.page${entity}(request);
     	}
     
     	@PostMapping(value = "/")
-    	public Integer create${entity}(@Valid @RequestBody ${entity?replace("DO", "Request")} request) {
+    	public Integer create${entity}(@Validated(Create.class) @RequestBody ${entity?replace("DO", "Request")} request) {
     		return ${table.serviceName?uncap_first}.create${entity}(request);
     	}
     
     	@PatchMapping(value = "/")
-    	public Integer patch${entity}(@Valid @RequestBody ${entity?replace("DO", "Request")} request) {
+    	public Integer patch${entity}(@Validated(Patch.class) @RequestBody ${entity?replace("DO", "Request")} request) {
     		return ${table.serviceName?uncap_first}.patch${entity}(request);
     	}
     
     	@PutMapping(value = "/")
-    	public Integer update${entity}(@Valid @RequestBody ${entity?replace("DO", "Request")} request) {
+    	public Integer update${entity}(@Validated(Put.class) @RequestBody ${entity?replace("DO", "Request")} request) {
     		return ${table.serviceName?uncap_first}.update${entity}(request);
     	}
     
     	@DeleteMapping(value = "/")
-    	public Integer delete${entity}(@Valid @RequestBody ${entity?replace("DO", "Request")} request) {
+    	public Integer delete${entity}(@Validated(Delete.class) @RequestBody ${entity?replace("DO", "Request")} request) {
     		return ${table.serviceName?uncap_first}.delete${entity}(request);
     	}
 
