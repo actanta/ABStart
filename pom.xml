@@ -49,17 +49,6 @@
 			</dependency>
 			<!--子模块-END-->
 
-			<!--全局排除logback,使用log4j2日志框架-->
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-logging</artifactId>
-				<exclusions>
-					<exclusion>
-						<groupId>*</groupId>
-						<artifactId>*</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
 
 			<!-- 三方库-START-->
 			<dependency>
@@ -67,7 +56,6 @@
 				<artifactId>p6spy</artifactId>
 				<version>3.9.1</version>
 			</dependency>
-			<!-- mysql驱动补版本号 -->
 			<dependency>
 				<groupId>com.mysql</groupId>
 				<artifactId>mysql-connector-j</artifactId>
@@ -80,21 +68,6 @@
 				<version>3.5.17</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.baomidou</groupId>
-				<artifactId>mybatis-plus-boot-starter</artifactId>
-				<version>3.5.17</version>
-			</dependency>
-			<dependency>
-				<groupId>com.baomidou</groupId>
-				<artifactId>mybatis-plus-annotation</artifactId>
-				<version>3.5.17</version>
-			</dependency>
-			<dependency>
-				<groupId>com.baomidou</groupId>
-				<artifactId>mybatis-plus-generator</artifactId>
-				<version>3.5.17</version>
 			</dependency>
 			<!--多数据源支持-->
 			<dependency>
