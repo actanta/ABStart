@@ -5,7 +5,7 @@ import cc.abing.abstart.model.biz_user.common.BizUserRequest;
 import cc.abing.abstart.model.biz_user.common.BizUserConverter;
 import cc.abing.abstart.dao.mapper.BizUserMapper;
 import cc.abing.abstart.biz.service.BizUserService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

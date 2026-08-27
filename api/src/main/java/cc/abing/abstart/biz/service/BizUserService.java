@@ -2,9 +2,8 @@ package cc.abing.abstart.biz.service;
 
 import cc.abing.abstart.model.biz_user.BizUserDO;
 import cc.abing.abstart.model.biz_user.common.BizUserRequest;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.spring.service.IService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.Date;
 import java.util.List;

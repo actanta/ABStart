@@ -1,7 +1,7 @@
 package cc.abing.abstart.suite.system.util;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.spring.service.IService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 

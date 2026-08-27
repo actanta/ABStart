@@ -94,8 +94,7 @@ public class CodeGenerator {
 				put(OutputFile.entity, USER_DIR + "/model/src/main/java/" + PACKAGE_PATH + "/model/" + TABLE_NAME);
 				// other:
 				// /USER_DIR/model/src/main/java/PACKAGE_PATH/model/TABLE_NAME/common/${entity}/${injectionConfig.customFileMap.key}
-				put(OutputFile.other,
-						USER_DIR + "/model/src/main/java/" + PACKAGE_PATH + "/model/" + TABLE_NAME + "/common");
+//				put(OutputFile.other, USER_DIR + "/model/src/main/java/" + PACKAGE_PATH + "/model/" + TABLE_NAME + "/common");
 			}
 		};
 		// 打印输出路径

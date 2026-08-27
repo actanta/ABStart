@@ -76,24 +76,31 @@
 			</dependency>
 			<dependency>
 				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-bom</artifactId>
+				<version>3.5.17</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
 				<artifactId>mybatis-plus-boot-starter</artifactId>
-				<version>3.5.1</version>
+				<version>3.5.17</version>
 			</dependency>
 			<dependency>
 				<groupId>com.baomidou</groupId>
 				<artifactId>mybatis-plus-annotation</artifactId>
-				<version>3.5.1</version>
+				<version>3.5.17</version>
 			</dependency>
 			<dependency>
 				<groupId>com.baomidou</groupId>
 				<artifactId>mybatis-plus-generator</artifactId>
-				<version>3.5.2</version>
+				<version>3.5.17</version>
 			</dependency>
 			<!--多数据源支持-->
 			<dependency>
 				<groupId>com.baomidou</groupId>
 				<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-				<version>3.2.1</version>
+				<version>4.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.freemarker</groupId>
