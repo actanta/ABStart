@@ -1,7 +1,6 @@
-package cc.abing.abstart.model.biz_user.common;
+package cc.abing.abstart.biz.request.BizUser;
 
-import cc.abing.abstart.model.biz_user.BizUserDO;
-import cc.abing.abstart.model.biz_user.common.BizUserRequest;
+import cc.abing.abstart.model.BizUser.BizUserDO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -12,7 +11,7 @@ import org.mapstruct.factory.Mappers;
  * </p>
  *
  * @author ABing
- * @since 2026-08-25
+ * @since 2026-08-29
  */
 @Mapper
 public interface BizUserConverter {

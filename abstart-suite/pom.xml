@@ -22,6 +22,11 @@
         <dependencies>
             <!-- 三方库-START-->
             <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot3-starter</artifactId>
+                <version>1.46.0</version>
+            </dependency>
+            <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
                 <version>2.13.3</version>
@@ -55,13 +60,6 @@
                 <artifactId>mapstruct</artifactId>
                 <version>1.6.3</version>
             </dependency>
-            <!--mapstruct编译-->
-            <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct-processor</artifactId>
-                <version>1.6.3</version>
-                <scope>provided</scope>
-            </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
@@ -77,11 +75,21 @@
                 <artifactId>hutool-all</artifactId>
                 <version>5.8.47</version>
             </dependency>
+            <!-- mybatis‑plus generator freemarker 模板引擎 -->
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>2.3.34</version>
+            </dependency>
             <!-- 三方库-END-->
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot3-starter</artifactId>
+        </dependency>
         <!-- validation-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -110,11 +118,6 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
         </dependency>
-<!--        &lt;!&ndash;mapstruct编译&ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.mapstruct</groupId>-->
-<!--            <artifactId>mapstruct-processor</artifactId>-->
-<!--        </dependency>-->
         <!--jackson注解-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -151,6 +154,11 @@
             <artifactId>mybatis-plus-jsqlparser-4.9</artifactId>
         </dependency>
         <!--数据库相关依赖-END-->
+        <!-- mybatis‑plus generator freemarker 模板引擎 -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

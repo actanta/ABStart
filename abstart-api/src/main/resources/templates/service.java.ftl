@@ -1,10 +1,9 @@
 package ${package.Service};
 
 import ${package.Entity}.${entity};
-import ${package.Entity}.common.${entity?replace("DO", "Request")};
+import ${package.Parent}.biz.request.${TABLE_NAME_UPPER_CAMEL}.${TABLE_NAME_UPPER_CAMEL}Request;
 import ${superServiceClassPackage};
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.Date;
 import java.util.List;

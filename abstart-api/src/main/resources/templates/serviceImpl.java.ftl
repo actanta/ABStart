@@ -1,8 +1,8 @@
 package ${package.ServiceImpl};
 
 import ${package.Entity}.${entity};
-import ${package.Entity}.common.${entity?replace("DO", "Request")};
-import ${package.Entity}.common.${entity?replace("DO", "Converter")};
+import ${package.Parent}.biz.request.${TABLE_NAME_UPPER_CAMEL}.${TABLE_NAME_UPPER_CAMEL}Request;
+import ${package.Parent}.biz.request.${TABLE_NAME_UPPER_CAMEL}.${TABLE_NAME_UPPER_CAMEL}Converter;
 import ${package.Mapper}.${table.mapperName};
 import ${package.Service}.${table.serviceName};
 import ${superServiceImplClassPackage};

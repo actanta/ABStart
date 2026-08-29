@@ -1,8 +1,8 @@
 package cc.abing.abstart.biz.service.impl;
 
-import cc.abing.abstart.model.biz_user.BizUserDO;
-import cc.abing.abstart.model.biz_user.common.BizUserRequest;
-import cc.abing.abstart.model.biz_user.common.BizUserConverter;
+import cc.abing.abstart.model.BizUser.BizUserDO;
+import cc.abing.abstart.biz.request.BizUser.BizUserRequest;
+import cc.abing.abstart.biz.request.BizUser.BizUserConverter;
 import cc.abing.abstart.dao.mapper.BizUserMapper;
 import cc.abing.abstart.biz.service.BizUserService;
 import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
@@ -23,7 +23,7 @@ import java.util.List;
  * </p>
  *
  * @author ABing
- * @since 2026-08-25
+ * @since 2026-08-29
  */
 @Service
 public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUserDO> implements BizUserService {
@@ -36,7 +36,7 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUserDO> im
 	}
 
 	@Override
-	public List<BizUserDO> listBizUserDO(Integer id, String username, String password, String slat, String sessionId, String nickname, String avatar, String mobile, String email, Integer status, Date lastLoginTime, Date lastLoginTimeLeft, Date lastLoginTimeRight, String lastLoginIp, Date createdTime, Date createdTimeLeft, Date createdTimeRight, Date updatedTime, Date updatedTimeLeft, Date updatedTimeRight, Integer isDeleted, Integer pageIndex, Integer pageSize) {
+	public List<BizUserDO> listBizUserDO(Integer id, String username, String password, String slat, String sessionId, String nickname, String avatar, String mobile, String email, Byte status, Date lastLoginTime, Date lastLoginTimeLeft, Date lastLoginTimeRight, String lastLoginIp, Date createdTime, Date createdTimeLeft, Date createdTimeRight, Date updatedTime, Date updatedTimeLeft, Date updatedTimeRight, Byte isDeleted, Integer pageIndex, Integer pageSize) {
 		LambdaQueryWrapper<BizUserDO> wrapper = Wrappers.<BizUserDO>lambdaQuery()
                 .eq(id != null, BizUserDO::getId, id)
                 .eq(username != null, BizUserDO::getUsername, username)
@@ -62,7 +62,7 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUserDO> im
 	}
 
 	@Override
-	public Page<BizUserDO> pageBizUserDO(Integer id, String username, String password, String slat, String sessionId, String nickname, String avatar, String mobile, String email, Integer status, Date lastLoginTime, Date lastLoginTimeLeft, Date lastLoginTimeRight, String lastLoginIp, Date createdTime, Date createdTimeLeft, Date createdTimeRight, Date updatedTime, Date updatedTimeLeft, Date updatedTimeRight, Integer isDeleted, Integer pageIndex, Integer pageSize) {
+	public Page<BizUserDO> pageBizUserDO(Integer id, String username, String password, String slat, String sessionId, String nickname, String avatar, String mobile, String email, Byte status, Date lastLoginTime, Date lastLoginTimeLeft, Date lastLoginTimeRight, String lastLoginIp, Date createdTime, Date createdTimeLeft, Date createdTimeRight, Date updatedTime, Date updatedTimeLeft, Date updatedTimeRight, Byte isDeleted, Integer pageIndex, Integer pageSize) {
             LambdaQueryWrapper<BizUserDO> wrapper = Wrappers.<BizUserDO>lambdaQuery()
                 .eq(id != null, BizUserDO::getId, id)
                 .eq(username != null, BizUserDO::getUsername, username)

@@ -1,7 +1,6 @@
-package ${package.Entity}.common;
+package ${package.Parent}.biz.request.${TABLE_NAME_UPPER_CAMEL};
 
 import ${package.Entity}.${entity};
-import ${package.Entity}.common.${entity?replace("DO", "Request")};
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

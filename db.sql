@@ -14,5 +14,9 @@ CREATE TABLE biz_user (
   last_login_ip VARCHAR(20) DEFAULT NULL COMMENT '最后登录IP',
   created_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   updated_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  is_deleted TINYINT DEFAULT 0 COMMENT '逻辑删除标记'
+  is_deleted TINYINT DEFAULT 0 COMMENT '逻辑删除标记',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `biz_user_unique_username` (`username`),
+  UNIQUE KEY `biz_user_unique_mobile` (`mobile`),
+  UNIQUE KEY `biz_user_unique_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

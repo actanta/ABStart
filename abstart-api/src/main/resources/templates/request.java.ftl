@@ -1,4 +1,4 @@
-package ${package.Entity}.common;
+package ${package.Parent}.biz.request.${TABLE_NAME_UPPER_CAMEL};
 
 import ${package.Entity}.${entity};
 import jakarta.validation.constraints.Max;

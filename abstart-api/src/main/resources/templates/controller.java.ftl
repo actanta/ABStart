@@ -3,7 +3,7 @@ package ${package.Controller};
 <#if superControllerClassPackage??>
 import ${superControllerClassPackage};
 </#if>
-import ${commonPackage}.support.system.validation.*;
+import ${commonPackage}.suite.system.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
-import constant.cc.abing.abstart.suite.system.SystemConstant;
-import ${package.Entity}.common.${entity?replace("DO", "Request")};
+import cc.abing.abstart.suite.system.constant.SystemConstant;
+import ${package.Parent}.biz.request.${TABLE_NAME_UPPER_CAMEL}.${TABLE_NAME_UPPER_CAMEL}Request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -60,7 +60,7 @@ public class ${table.controllerName} {
 		this.${table.serviceName?uncap_first} = ${table.serviceName?uncap_first};
 	}
 	
-	@GetMapping(value = "/")
+	@GetMapping(value = "")
     	public List<${entity}> list${entity}(
     	<#list table.fields as field>
                 @RequestParam(value = "${field.propertyName}", required = false) ${field.propertyType} ${field.propertyName},
@@ -79,22 +79,22 @@ public class ${table.controllerName} {
     		return ${table.serviceName?uncap_first}.page${entity}(request);
     	}
     
-    	@PostMapping(value = "/")
+    	@PostMapping(value = "")
     	public Integer create${entity}(@Validated(Create.class) @RequestBody ${entity?replace("DO", "Request")} request) {
     		return ${table.serviceName?uncap_first}.create${entity}(request);
     	}
     
-    	@PatchMapping(value = "/")
+    	@PatchMapping(value = "")
     	public Integer patch${entity}(@Validated(Patch.class) @RequestBody ${entity?replace("DO", "Request")} request) {
     		return ${table.serviceName?uncap_first}.patch${entity}(request);
     	}
     
-    	@PutMapping(value = "/")
+    	@PutMapping(value = "")
     	public Integer update${entity}(@Validated(Put.class) @RequestBody ${entity?replace("DO", "Request")} request) {
     		return ${table.serviceName?uncap_first}.update${entity}(request);
     	}
     
-    	@DeleteMapping(value = "/")
+    	@DeleteMapping(value = "")
     	public Integer delete${entity}(@Validated(Delete.class) @RequestBody ${entity?replace("DO", "Request")} request) {
     		return ${table.serviceName?uncap_first}.delete${entity}(request);
     	}

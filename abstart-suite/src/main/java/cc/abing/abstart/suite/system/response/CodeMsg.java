@@ -27,6 +27,11 @@ public enum CodeMsg implements ICodeMsg {
 	 */
 	SYSTEM_ERR("500", "系统异常"),
 
+	/**
+	 * 参数缺失
+	 */
+	PARAM_REQUIRE("400", "参数缺失"),
+
 	;
 
 	private final String code;

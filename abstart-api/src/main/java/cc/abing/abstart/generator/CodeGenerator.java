@@ -83,18 +83,20 @@ public class CodeGenerator {
 				});
 
 		// 自定义输出路径
+		String TABLE_NAME_UPPER_CAMEL = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, TABLE_NAME);
 		final Map<OutputFile, String> pathInfoMap = new HashMap<OutputFile, String>() {
 			private static final long serialVersionUID = -3741977801579160080L;
 
 			{
-				put(OutputFile.controller, USER_DIR + "/api/src/main/java/" + PACKAGE_PATH + "/api/controller");
-				put(OutputFile.service, USER_DIR + "/api/src/main/java/" + PACKAGE_PATH + "/biz/service");
-				put(OutputFile.serviceImpl, USER_DIR + "/api/src/main/java/" + PACKAGE_PATH + "/biz/service/impl");
-				put(OutputFile.xml, USER_DIR + "/api/src/main/resources/mapper");
-				put(OutputFile.entity, USER_DIR + "/model/src/main/java/" + PACKAGE_PATH + "/model/" + TABLE_NAME);
+				put(OutputFile.controller, USER_DIR + "/abstart-api/src/main/java/" + PACKAGE_PATH + "/api/controller");
+				put(OutputFile.service, USER_DIR + "/abstart-api/src/main/java/" + PACKAGE_PATH + "/biz/service");
+				put(OutputFile.serviceImpl, USER_DIR + "/abstart-api/src/main/java/" + PACKAGE_PATH + "/biz/service/impl");
+				put(OutputFile.mapper, USER_DIR + "/abstart-api/src/main/java/" + PACKAGE_PATH + "/dao/mapper");
+				put(OutputFile.xml, USER_DIR + "/abstart-api/src/main/resources/mapper");
+				put(OutputFile.entity, USER_DIR + "/abstart-model/src/main/java/" + PACKAGE_PATH + "/model/" + TABLE_NAME_UPPER_CAMEL);
 				// other:
 				// /USER_DIR/model/src/main/java/PACKAGE_PATH/model/TABLE_NAME/common/${entity}/${injectionConfig.customFileMap.key}
-//				put(OutputFile.other, USER_DIR + "/model/src/main/java/" + PACKAGE_PATH + "/model/" + TABLE_NAME + "/common");
+				put(OutputFile.parent, USER_DIR + "/abstart-api/src/main/java/" + PACKAGE_PATH + "/biz/request");
 			}
 		};
 		// 打印输出路径
@@ -110,7 +112,7 @@ public class CodeGenerator {
 				.packageConfig(builder -> {
 					builder.parent(PACKAGE_NAME).moduleName(MODULE_NAME).controller("api.controller")
 							.service("biz.service").serviceImpl("biz.service.impl").mapper("dao.mapper")
-							.xml("mapper.xml").entity("model." + TABLE_NAME).pathInfo(pathInfoMap);
+							.xml("mapper.xml").entity("model." + TABLE_NAME_UPPER_CAMEL).pathInfo(pathInfoMap);
 				})
 				// 自定义策略配置 .enableChainModel().addTableFills(new Column("create_time",
 				// FieldFill.INSERT))
@@ -131,19 +133,21 @@ public class CodeGenerator {
 					builder.customFile(new HashMap<String, String>() {
 						{
 							// 指定自定义模板文件路径<输出文件名，模板路径>
-							put("../" + CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, TABLE_NAME)
+							put("/../" + TABLE_NAME_UPPER_CAMEL + "/" + TABLE_NAME_UPPER_CAMEL
 									+ "Converter.java", "/templates/converter.java.ftl");
-							put("../" + CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, TABLE_NAME)
+							put("/../" + TABLE_NAME_UPPER_CAMEL + "/"  + TABLE_NAME_UPPER_CAMEL
 									+ "Request.java", "/templates/request.java.ftl");
 						}
 					}).customMap(new HashMap<String, Object>() {
 						{
 							put("MyComment", "自定义变量值");
 							put("commonPackage", PACKAGE_NAME + "." + MODULE_NAME);
+							put("TABLE_NAME_UPPER_CAMEL", TABLE_NAME_UPPER_CAMEL);
 						}
 					}).beforeOutputFile((tableInfo, map) -> {
-						System.out.println("【CodeGenerator变量map】");
+						System.out.println("【CodeGenerator变量map】START");
 						map.forEach((key, value) -> System.out.println(key + '=' + value));
+						System.out.println("【CodeGenerator变量map】END");
 					})
 					// .fileOverride()
 					;
