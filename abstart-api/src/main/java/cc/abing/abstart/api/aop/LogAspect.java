@@ -105,7 +105,7 @@
 				} catch (Throwable e) {
 					logger.error(EXCEPTION_TEMPLATE,
 							SystemConstant.FAIL, httpMethod, uri, timestamp,
-							userId, ip, methodName, param, body, e.getMessage(), e);
+							userId, ip, methodName, param, body, e.getMessage());
 					throw e; // 继续向上抛出，交给全局异常处理器处理业务返回
 				}
 				long end = System.currentTimeMillis();

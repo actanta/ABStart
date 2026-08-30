@@ -3,6 +3,8 @@ package cc.abing.abstart.model.BizUser;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Date;
@@ -34,16 +36,19 @@ public class BizUserDO implements Serializable {
     /**
      * 密码
      */
+    @JsonIgnore
     private String password;
 
     /**
      * 盐值
      */
+    @JsonIgnore
     private String slat;
 
     /**
      * 会话ID
      */
+    @JsonIgnore
     private String sessionId;
 
     /**
