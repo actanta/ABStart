@@ -7,14 +7,17 @@ import cc.abing.abstart.biz.service.BizUserService;
 import cc.abing.abstart.model.BizUser.BizUserDO;
 import cc.abing.abstart.suite.system.exception.BizException;
 import cc.abing.abstart.suite.system.response.CodeMsg;
+import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -28,23 +31,28 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Object login(BizUserRequest bizUserRequest) {
         BizUserDO bizUserDO = bizUserService.getOne(new LambdaQueryWrapper<BizUserDO>()
                 .eq(BizUserDO::getUsername, bizUserRequest.getUsername())
-                .eq(BizUserDO::getStatus, 1)
         );
         if (Objects.isNull(bizUserDO)){
             throw new BizException(CodeMsg.BAD_REQUEST, "用户名或密码错误");
         }
-        String pw_hash = BCrypt.hashpw(bizUserRequest.getPassword(), bizUserDO.getSlat());
-        if (Objects.equals(pw_hash, bizUserDO.getPassword())){
+
+        if (Objects.equals(bizUserDO.getStatus(), (byte)1) &&
+                BCrypt.checkpw(bizUserRequest.getPassword(), bizUserDO.getPassword())){
             StpUtil.login(bizUserDO.getId());
+            SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+            bizUserDO.setSessionId(Optional.ofNullable(tokenInfo.getLoginId()).map(Object::toString).orElse(""));
+            bizUserService.updateById(bizUserDO);
             return bizUserDO;
         }
         throw new BizException(CodeMsg.BAD_REQUEST, "用户名或密码错误");
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Object register(BizUserRequest bizUserRequest) {
         String gensalt = BCrypt.gensalt();
         log.info("salt:{}", gensalt);

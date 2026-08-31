@@ -48,7 +48,6 @@ public class BizUserDO implements Serializable {
     /**
      * 会话ID
      */
-    @JsonIgnore
     private String sessionId;
 
     /**
