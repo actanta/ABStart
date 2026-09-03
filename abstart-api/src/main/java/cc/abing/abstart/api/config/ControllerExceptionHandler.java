@@ -45,7 +45,8 @@ public class ControllerExceptionHandler {
     @ExceptionHandler({BizException.class})
     @ResponseStatus(HttpStatus.OK)
     public Object handleBusinessException(BizException e) {
-        return logException("业务异常:[" + e.getCode() + "]" + e.getInfo(), e);
+        log.warn("业务异常:[" + e.getCode() + "]" + e.getInfo(), e);
+        return new Result<>(e.getCode(), e.getInfo(), null);
     }
 
     @ExceptionHandler({

@@ -48,6 +48,18 @@ public final class UserContextHolder {
     }
 
     /**
+     * 清除当前请求的用户请求上下文
+     * <p>由拦截器在 afterCompletion 阶段调用。Request 域下上下文随请求结束自动释放，
+     * 显式清除主要为后续切换为 ThreadLocal 存储（如非 HTTP 调用场景）时保证上下文被正确清空。</p>
+     */
+    public static void clear() {
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes != null) {
+            requestAttributes.removeAttribute(CONTEXT_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
+        }
+    }
+
+    /**
      * 便捷读取：客户端 IP
      */
     public static String getIp() {

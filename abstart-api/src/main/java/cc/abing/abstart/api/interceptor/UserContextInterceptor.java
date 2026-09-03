@@ -7,6 +7,7 @@ import cc.abing.abstart.suite.system.constant.SystemConstant;
 import cn.dev33.satoken.stp.StpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.Enumeration;
@@ -20,6 +21,7 @@ import java.util.Enumeration;
  * @author ABing
  * @since 2026-08-29
  */
+@Component
 public class UserContextInterceptor implements HandlerInterceptor {
 
     @Override
@@ -42,5 +44,10 @@ public class UserContextInterceptor implements HandlerInterceptor {
         }
         UserContextHolder.set(context);
         return true;
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        UserContextHolder.clear();
     }
 }
