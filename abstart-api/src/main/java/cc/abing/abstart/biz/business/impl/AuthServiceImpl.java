@@ -8,6 +8,7 @@ import cc.abing.abstart.biz.service.BizUserService;
 import cc.abing.abstart.model.BizUser.BizUserDO;
 import cc.abing.abstart.suite.system.exception.BizException;
 import cc.abing.abstart.suite.system.response.CodeMsg;
+import cc.abing.abstart.suite.system.security.LoginAttemptStore;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.crypto.digest.BCrypt;
@@ -26,18 +27,28 @@ public class AuthServiceImpl implements AuthService {
 
     private final BizUserService bizUserService;
 
+    private final LoginAttemptStore loginAttemptStore;
+
     @Autowired
-    public AuthServiceImpl(BizUserService bizUserService){
+    public AuthServiceImpl(BizUserService bizUserService, LoginAttemptStore loginAttemptStore) {
         this.bizUserService = bizUserService;
+        this.loginAttemptStore = loginAttemptStore;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Object login(BizUserRequest bizUserRequest) {
+        // 登录防爆破：用户名+IP 维度，连续失败达阈值后锁定（阈值/锁定时长见 application.properties）
+        String attemptKey = buildAttemptKey(bizUserRequest.getUsername());
+        if (loginAttemptStore.isLocked(attemptKey)) {
+            throw new BizException(CodeMsg.TOO_MANY_ATTEMPTS);
+        }
+
         BizUserDO bizUserDO = bizUserService.getOne(new LambdaQueryWrapper<BizUserDO>()
                 .eq(BizUserDO::getUsername, bizUserRequest.getUsername())
         );
-        if (Objects.isNull(bizUserDO)){
+        if (Objects.isNull(bizUserDO)) {
+            loginAttemptStore.recordFailure(attemptKey);
             throw new BizException(CodeMsg.BAD_REQUEST, "用户名或密码错误");
         }
 
@@ -49,9 +60,19 @@ public class AuthServiceImpl implements AuthService {
             bizUserDO.setLastLoginTime(new Date());
             bizUserDO.setLastLoginIp(UserContextHolder.getIp());
             bizUserService.updateById(bizUserDO);
+            loginAttemptStore.clear(attemptKey);
             return bizUserDO;
         }
+        loginAttemptStore.recordFailure(attemptKey);
         throw new BizException(CodeMsg.BAD_REQUEST, "用户名或密码错误");
+    }
+
+    /**
+     * 防爆破 key：username:ip（非 Web 调用无 IP 时以 unknown 兜底）
+     */
+    private String buildAttemptKey(String username) {
+        String ip = UserContextHolder.getIp();
+        return username + ":" + (ip == null || ip.isEmpty() ? "unknown" : ip);
     }
 
     @Override

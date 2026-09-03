@@ -33,6 +33,7 @@ build/
 .vscode/
 
 .reasonix/
+logs/
 
 
 .flattened-pom.xml

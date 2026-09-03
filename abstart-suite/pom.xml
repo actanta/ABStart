@@ -75,6 +75,11 @@
                 <artifactId>hutool-all</artifactId>
                 <version>5.8.47</version>
             </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.17.0</version>
+            </dependency>
             <!-- mybatis‑plus generator freemarker 模板引擎 -->
             <dependency>
                 <groupId>org.freemarker</groupId>
@@ -107,6 +112,10 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
         </dependency>
         <!--lombok-->
         <dependency>

@@ -68,6 +68,11 @@ public final class SystemConstant {
 	public static final String HEADER_TIMESTAMP = "X-Timestamp";
 
 	/**
+	 * 客户端随机串请求头（防重放）
+	 */
+	public static final String HEADER_NONCE = "X-Nonce";
+
+	/**
 	 * 客户端版本请求头
 	 */
 	public static final String HEADER_VERSION = "X-Version";
