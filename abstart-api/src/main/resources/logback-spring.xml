@@ -14,11 +14,11 @@
 
     <!-- 本地控制台彩色 pattern，仅添加颜色，格式相同 -->
     <property name="CONSOLE_COLOR_PATTERN"
-              value="%clr(%date{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([%X{traceId:-no-trace}]){magenta} %clr(%c.%M:%L){cyan} %clr([%thread]){yellow} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+              value="%clr(%date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([%X{traceId:-no-trace}]){magenta} %clr(%c.%M:%L){cyan} %clr([%thread]){yellow} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
 
     <!-- 通用 pattern：文件、线上 stdout 使用，完整字段，原生 %ex 输出堆栈，无颜色 -->
     <property name="COMMON_PATTERN"
-              value="%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{traceId:-no-trace}] %c.%M:%L [%thread] %m%n%ex"/>
+              value="%date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %-5level [%X{traceId:-no-trace}] %c.%M:%L [%thread] %m%n%ex"/>
 
     <!-- ################ 滚动文件输出 ################ -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -43,6 +43,31 @@
         <!--<discardingThreshold>0</discardingThreshold>-->
     </appender>
 
+    <!-- ERROR 独立文件：仅记录 ERROR 及以上，原全量日志输出不变，只是额外单独存一份 -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}.error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 按天滚动，超过大小触发切片，自动 gz 压缩历史文件 -->
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}.error.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>110MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>8GB</totalSizeCap>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder" charset="UTF-8">
+            <pattern>${COMMON_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 异步包装 ERROR 独立文件 -->
+    <appender name="ASYNC_ERROR_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="ERROR_FILE"/>
+        <queueSize>256</queueSize>
+        <neverBlock>false</neverBlock>
+    </appender>
+
     <!-- ============== local 本地开发 profile ============== -->
     <springProfile name="local">
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -54,12 +79,14 @@
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="ASYNC_FILE"/>
+            <appender-ref ref="ASYNC_ERROR_FILE"/>
         </root>
 
         <!-- 开发环境可放开相关包日志等级进行调试 -->
         <logger name="cc.abing.abstart" level="INFO" additivity="false">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="ASYNC_FILE"/>
+            <appender-ref ref="ASYNC_ERROR_FILE"/>
         </logger>
     </springProfile>
 
@@ -74,6 +101,7 @@
         <root level="INFO">
             <appender-ref ref="STDOUT"/>
             <appender-ref ref="ASYNC_FILE"/>
+            <appender-ref ref="ASYNC_ERROR_FILE"/>
         </root>
     </springProfile>
 
