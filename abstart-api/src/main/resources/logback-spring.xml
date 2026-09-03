@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <!-- 引入SpringBoot默认变量定义 LOG_LEVEL_PATTERN、LOG_EXCEPTION_CONVERSION_WORD -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <!-- 从 application.properties 读取外部配置（LOG_HOME建议使用绝对路径，避免以命令执行位置为基准导致权限问题） -->
+    <springProperty scope="context" name="LOG_HOME" source="logback.path" defaultValue="./logs"/>
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="ABStart"/>
+
+
+    <!-- SpringBoot 彩色转换器，仅 local 环境使用 -->
+    <conversionRule conversionWord="clr" class="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex" class="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx" class="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+
+    <!-- 本地控制台彩色 pattern，仅添加颜色，格式相同 -->
+    <property name="CONSOLE_COLOR_PATTERN"
+              value="%clr(%date{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([%X{traceId:-no-trace}]){magenta} %clr(%c.%M:%L){cyan} %clr([%thread]){yellow} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <!-- 通用 pattern：文件、线上 stdout 使用，完整字段，原生 %ex 输出堆栈，无颜色 -->
+    <property name="COMMON_PATTERN"
+              value="%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{traceId:-no-trace}] %c.%M:%L [%thread] %m%n%ex"/>
+
+    <!-- ################ 滚动文件输出 ################ -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 按天滚动，超过大小触发切片，自动 gz 压缩历史文件 -->
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>110MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>8GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder" charset="UTF-8">
+            <pattern>${COMMON_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 异步包装文件输出，防止磁盘 IO 阻塞 Web 业务线程 -->
+    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE"/>
+        <queueSize>512</queueSize>
+        <neverBlock>false</neverBlock><!-- 队列满不阻塞业务，丢弃日志，暂时不允许丢弃 -->
+        <!--<discardingThreshold>0</discardingThreshold>-->
+    </appender>
+
+    <!-- ============== local 本地开发 profile ============== -->
+    <springProfile name="local">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder charset="UTF-8">
+                <pattern>${CONSOLE_COLOR_PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="ASYNC_FILE"/>
+        </root>
+
+        <!-- 开发环境可放开相关包日志等级进行调试 -->
+        <logger name="cc.abing.abstart" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="ASYNC_FILE"/>
+        </logger>
+    </springProfile>
+
+    <!-- ============== dev / test / qa / prod 服务器/容器环境 ============== -->
+    <springProfile name="dev,test,qa,prod">
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder" charset="UTF-8">
+                <pattern>${COMMON_PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="ASYNC_FILE"/>
+        </root>
+    </springProfile>
+
+    <!-- ################### 可选降噪：关闭框架大量 INFO/DEBUG 噪音 ################### -->
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.apache.tomcat" level="INFO"/>
+    <logger name="org.apache.catalina" level="INFO"/>
+    <logger name="com.zaxxer.hikari" level="INFO"/>
+    <logger name="org.mybatis" level="INFO"/>
+    <logger name="io.netty" level="INFO"/>
+
+</configuration>

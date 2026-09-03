@@ -81,6 +81,13 @@ public final class UserContextHolder {
     }
 
     /**
+     * 便捷读取：客户端时间戳
+     */
+    public static String getTimestamp() {
+        return value(UserContext::getTimestamp);
+    }
+
+    /**
      * 便捷读取：客户端版本
      */
     public static String getVersion() {

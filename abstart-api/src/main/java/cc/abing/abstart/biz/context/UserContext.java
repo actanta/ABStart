@@ -31,6 +31,11 @@ public class UserContext {
     private String token;
 
     /**
+     * 客户端时间戳（请求头 X-Timestamp）
+     */
+    private String timestamp;
+
+    /**
      * 客户端版本（请求头 X-Version）
      */
     private String version;
@@ -67,6 +72,14 @@ public class UserContext {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getVersion() {

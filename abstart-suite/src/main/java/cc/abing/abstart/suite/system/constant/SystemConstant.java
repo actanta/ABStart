@@ -63,6 +63,11 @@ public final class SystemConstant {
 	public static final String FAIL = "N";
 
 	/**
+	 * 客户端时间戳请求头 13位
+	 */
+	public static final String HEADER_TIMESTAMP = "X-Timestamp";
+
+	/**
 	 * 客户端版本请求头
 	 */
 	public static final String HEADER_VERSION = "X-Version";

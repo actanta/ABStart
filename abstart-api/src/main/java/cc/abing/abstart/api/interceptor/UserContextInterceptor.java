@@ -28,6 +28,7 @@ public class UserContextInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         UserContext context = new UserContext();
         context.setIp(IpUtil.getIpAddr(request));
+        context.setTimestamp(request.getHeader(SystemConstant.HEADER_TIMESTAMP));
         context.setVersion(request.getHeader(SystemConstant.HEADER_VERSION));
         context.setDeviceId(request.getHeader(SystemConstant.HEADER_DEVICE_ID));
         // sa-token：当前请求携带的令牌与会话登录标识，未登录场景下为空

@@ -5,6 +5,7 @@
 	package cc.abing.abstart.api.aop;
 
 	import cc.abing.abstart.api.util.IpUtil;
+	import cc.abing.abstart.biz.context.UserContextHolder;
 	import cc.abing.abstart.suite.system.constant.SystemConstant;
 	import cc.abing.abstart.suite.system.exception.BizException;
 	import cc.abing.abstart.suite.system.response.CodeMsg;
@@ -82,7 +83,7 @@
 				String ip = parseIp(request);
 				String httpMethod = request.getMethod();
 				String uri = request.getRequestURI();
-				String timestamp = Optional.ofNullable(request.getHeader("timestamp")).orElse(SystemConstant.HYPHEN);
+				String timestamp = Optional.ofNullable(UserContextHolder.getTimestamp()).orElse(SystemConstant.HYPHEN);
 
 				// 获取Session
 				// 获取Session
@@ -91,6 +92,7 @@
 				if(session != null){
 					userId = (String) session.getAttribute("user_id");
 				}
+				userId = userId != null? userId : UserContextHolder.getUserId();
 				// 获取请求参数 TODO 可能同时打印param和body，待完善
 				String param = getParam(request);
 				Object arg = Arrays.stream(joinPoint.getArgs()).filter(Objects::nonNull)
