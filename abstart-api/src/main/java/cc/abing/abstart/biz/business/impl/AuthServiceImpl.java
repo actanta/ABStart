@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -44,7 +44,8 @@ public class AuthServiceImpl implements AuthService {
                 BCrypt.checkpw(bizUserRequest.getPassword(), bizUserDO.getPassword())){
             StpUtil.login(bizUserDO.getId());
             SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
-            bizUserDO.setSessionId(Optional.ofNullable(tokenInfo.getLoginId()).map(Object::toString).orElse(""));
+            bizUserDO.setSessionId(tokenInfo.getTokenValue());
+            bizUserDO.setLastLoginTime(new Date());
             bizUserService.updateById(bizUserDO);
             return bizUserDO;
         }
