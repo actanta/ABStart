@@ -4,6 +4,7 @@
 	 */
 	package cc.abing.abstart.api.aop;
 
+	import cc.abing.abstart.api.util.IpUtil;
 	import cc.abing.abstart.suite.system.constant.SystemConstant;
 	import cc.abing.abstart.suite.system.exception.BizException;
 	import cc.abing.abstart.suite.system.response.CodeMsg;
@@ -149,33 +150,11 @@
 		 * @return
 		 */
 		public static String parseIp(HttpServletRequest request) {
-			String ip = getIpAddr(request);
+			String ip = IpUtil.getIpAddr(request);
 			if (StringUtils.isBlank(ip)) {
 				return SystemConstant.HYPHEN;
 			}
 			return ip;
-		}
-
-		/**
-		 * 获取ip地址
-		 * @param request
-		 * @return
-		 */
-		public static String getIpAddr(HttpServletRequest request) {
-			if (request == null) {
-				return "";
-			}
-			String ip = request.getHeader("X-Forwarded-For");
-			if (StringUtils.isNotEmpty(ip) && !SystemConstant.UNKNOWN.equalsIgnoreCase(ip)) {
-				// 多次反向代理后会有多个ip值，第一个ip才是真实ip
-				return ip.split(",")[0];
-			}
-
-			ip = request.getHeader("X-Real-IP");
-			if (StringUtils.isNotEmpty(ip) && !SystemConstant.UNKNOWN.equalsIgnoreCase(ip)) {
-				return ip;
-			}
-			return request.getRemoteAddr();
 		}
 
 		private String getParam(HttpServletRequest request) {

@@ -62,6 +62,16 @@ public final class SystemConstant {
 	 */
 	public static final String FAIL = "N";
 
+	/**
+	 * 客户端版本请求头
+	 */
+	public static final String HEADER_VERSION = "X-Version";
+
+	/**
+	 * 客户端设备标识请求头
+	 */
+	public static final String HEADER_DEVICE_ID = "X-Device-Id";
+
 	private SystemConstant() {
 	}
 

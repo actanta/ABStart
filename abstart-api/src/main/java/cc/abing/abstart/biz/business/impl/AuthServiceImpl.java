@@ -2,6 +2,7 @@ package cc.abing.abstart.biz.business.impl;
 
 
 import cc.abing.abstart.biz.business.AuthService;
+import cc.abing.abstart.biz.context.UserContextHolder;
 import cc.abing.abstart.biz.request.BizUser.BizUserRequest;
 import cc.abing.abstart.biz.service.BizUserService;
 import cc.abing.abstart.model.BizUser.BizUserDO;
@@ -46,6 +47,7 @@ public class AuthServiceImpl implements AuthService {
             SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
             bizUserDO.setSessionId(tokenInfo.getTokenValue());
             bizUserDO.setLastLoginTime(new Date());
+            bizUserDO.setLastLoginIp(UserContextHolder.getIp());
             bizUserService.updateById(bizUserDO);
             return bizUserDO;
         }
