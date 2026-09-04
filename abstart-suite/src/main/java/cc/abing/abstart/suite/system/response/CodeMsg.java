@@ -23,6 +23,11 @@ public enum CodeMsg implements ICodeMsg {
 	FORBIDDEN("403", "无权访问"),
 
 	/**
+	 * 访问资源不存在
+	 */
+	NOT_FOUND("404", "访问资源不存在"),
+
+	/**
 	 * 系统异常
 	 */
 	SYSTEM_ERR("500", "系统异常"),
@@ -46,6 +51,11 @@ public enum CodeMsg implements ICodeMsg {
 	 * 尝试次数过多（登录防爆破锁定）
 	 */
 	TOO_MANY_ATTEMPTS("429", "尝试次数过多，请稍后再试"),
+
+	/**
+	 * 请求过于频繁（接口限流触发）
+	 */
+	RATE_LIMITED("429", "请求过于频繁，请稍后再试"),
 
 	;
 

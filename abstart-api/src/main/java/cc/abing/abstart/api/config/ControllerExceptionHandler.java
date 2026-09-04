@@ -1,6 +1,7 @@
 package cc.abing.abstart.api.config;
 
 import cc.abing.abstart.suite.system.exception.BizException;
+import cc.abing.abstart.suite.system.response.CodeMsg;
 import cc.abing.abstart.suite.system.result.Result;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -40,6 +43,12 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Object handleException(Exception e) {
         return logException("系统异常:" + e.getClass().getSimpleName(), e);
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Object handleNoResourceFoundException(NoResourceFoundException e) {
+        return Result.failed(CodeMsg.NOT_FOUND, null);
     }
 
     @ExceptionHandler({BizException.class})

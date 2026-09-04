@@ -1,6 +1,7 @@
 package cc.abing.abstart.api.config;
 
 import cc.abing.abstart.api.interceptor.AuthInterceptor;
+import cc.abing.abstart.api.interceptor.RateLimitInterceptor;
 import cc.abing.abstart.api.interceptor.ReplayProtectInterceptor;
 import cc.abing.abstart.api.interceptor.UserContextInterceptor;
 import cc.abing.abstart.suite.system.constant.SystemConstant;
@@ -24,12 +25,15 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final UserContextInterceptor userContextInterceptor;
 
+    private final RateLimitInterceptor rateLimitInterceptor;
+
     @Autowired
     public WebConfig(ReplayProtectInterceptor replayProtectInterceptor, AuthInterceptor authInterceptor,
-            UserContextInterceptor userContextInterceptor) {
+            UserContextInterceptor userContextInterceptor, RateLimitInterceptor rateLimitInterceptor) {
         this.replayProtectInterceptor = replayProtectInterceptor;
         this.authInterceptor = authInterceptor;
         this.userContextInterceptor = userContextInterceptor;
+        this.rateLimitInterceptor = rateLimitInterceptor;
     }
 
     @Override
@@ -43,6 +47,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns(SystemConstant.BASE_PATH + "/auth/**");
         // 用户请求上下文组装
         registry.addInterceptor(userContextInterceptor)
+                .addPathPatterns(SystemConstant.BASE_PATH + "/**");
+        // 接口限流：最后执行，复用 UserContext 已组装的 IP；未登录接口若被 Auth 拦截则不消耗限流计数
+        registry.addInterceptor(rateLimitInterceptor)
                 .addPathPatterns(SystemConstant.BASE_PATH + "/**");
     }
 }
